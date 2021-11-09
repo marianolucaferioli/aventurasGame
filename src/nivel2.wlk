@@ -1,45 +1,62 @@
 import wollok.game.*
+import gerardo.*
+import celdasEspeciales.*
+import utilidades.*
+import barrasSuperiores.*
+import elementos.*
+import direcciones.*
 import fondo.*
-import personajes.*
 
-object nivelLlaves {
-
+object inicioNivel2 {
 	method configurate() {
-		// fondo - es importante que sea el primer visual que se agregue
-		game.addVisual(new Fondo(image="fondoCompleto.png"))
-				 
-		// otros visuals, p.ej. bloques o llaves
-			
-		// personaje, es importante que sea el último visual que se agregue
-		game.addVisual(personajeSimple)
+		game.addVisual(new FondoNivel(position = game.at(0,0), image = "comienzo_nivel2.png"))
 		
-		// teclado
-		// este es para probar, no es necesario dejarlo
-		keyboard.g().onPressDo({ self.ganar() })
-
-		// colisiones, acá sí hacen falta
-	}
-	
-	method ganar() {
-		// es muy parecido al terminar() de nivelBloques
-		// el perder() también va a ser parecido
-		
-		// game.clear() limpia visuals, teclado, colisiones y acciones
-		game.clear()
-		// después puedo volver a agregar el fondo, y algún visual para que no quede tan pelado
-		game.addVisual(new Fondo(image="fondoCompleto.png"))
-		// después de un ratito ...
-		game.schedule(2500, {
+		keyboard.enter().onPressDo({
 			game.clear()
-			// cambio de fondo
-			game.addVisual(new Fondo(image="ganamos.png"))
-			// después de un ratito ...
-			game.schedule(3000, {
-				// fin del juego
-				game.stop()
-			})
+			nivel2.configurate()
 		})
 	}
-	
-	
+}
+
+/** *********************************************************************** **/
+
+object nivel2 {
+	method configurate() {
+		
+		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ladrillo.png"))
+		
+		// Gerardo
+		gerardo.energia(30)
+		gerardo.salud(100)
+		gerardo.dinero(0)
+		
+		// esto si se quiere setear
+		gerardo.position(game.center())
+		gerardo.ultimoCostado(right)
+		
+		keyboard.up().onPressDo({ gerardo.move(up)})
+		keyboard.down().onPressDo({gerardo.move(down)})
+		keyboard.right().onPressDo({ gerardo.move(right)})
+		keyboard.left().onPressDo({ gerardo.move(left)})
+		
+		keyboard.e().onPressDo({gerardo.agarrar()})
+		
+		// Salud y energí
+		game.addVisual(barraDeSalud)
+		game.addVisual(rayito)
+		game.addVisual(contadorEnergia1)
+		game.addVisual(contadorEnergia2)
+		game.addVisual(monedita)
+		game.addVisual(contadorDinero1)
+		game.addVisual(contadorDinero2)
+
+		// Gerardo
+		game.addVisual(gerardo)
+		
+		// Reinicio nivel
+		keyboard.r().onPressDo({	
+			game.clear()
+			self.configurate()
+		})
+	}
 }

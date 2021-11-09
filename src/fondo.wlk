@@ -1,6 +1,10 @@
 import wollok.game.*
+import elementos.*
 
-class Fondo {
-	const property position = game.at(0, 0)
-	var property image 
+class FondoNivel inherits Elemento {
+	var property image
+	
+	override method interactuar() {}
+	
+	override method puedeSuperponer() = true
 }
