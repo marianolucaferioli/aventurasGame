@@ -1,6 +1,7 @@
 import wollok.game.*
 import elementos.*
 import nivel1.*
+import sonidos.*
 
 object inicio {
 	method configurate() {
@@ -11,6 +12,8 @@ object inicio {
 		keyboard.down().onPressDo({interfazInicio.seleccionar("seleccionar_controles")})
 		
 		keyboard.enter().onPressDo({interfazInicio.seleccionar()})
+		
+		musicaFondoNivel1.sonar()
 	}
 }
 

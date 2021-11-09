@@ -8,6 +8,7 @@ import nivel2.*
 import nivelPerder.*
 import fondo.*
 import bichosYComida.*
+import sonidos.*
 
 object inicioNivel1 {
 	method configurate() {
@@ -265,5 +266,8 @@ object finNivel1 {
 			game.clear()
 			inicioNivel2.configurate()
 		})
+		
+		musicaFondoNivel1.parar() //para la música de fondo
+		musicaFondoNivel2.sonar()
 	}
 }
