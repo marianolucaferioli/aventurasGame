@@ -30,7 +30,7 @@ En cambio, si Gerardo agarra a pepucha hay dos casos a contemplar:
 
 * Si la agarra y nunca se paró sobre ella, Pepucha le da a Gerardo toda la salud que tiene en stock, eso si, despues agua y ajo (o agua y garbanzo... ¿?) pues pepucha se queda sin energía y salud para dar!.
     
-* Si ya se paró sobre ella en algún momento Gerardo puede obtener de Pepucha un 20% menos de salud por cada vez que se haya parado.
+* Si ya se paró sobre ella en algún momento, Gerardo puede obtener de Pepucha un 20% menos de salud por cada vez que se haya parado.
     
 
 Es decir, si Gerardo se para una vez sobre ella, recupera 10 puntos de energia y si después la agarra, en vez de recuperar 100 puntos de salud, recupera 80.
