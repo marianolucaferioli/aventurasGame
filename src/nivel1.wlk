@@ -117,6 +117,7 @@ object nivel1 {
 		comidas.forEach{comida => comida.setNewRandomPosition()}
 		
 		pepucha.setNewRandomPosition()
+		pepucha.setPepucha()
 		
 		//game.onTick(3000, "Movimiento bichos", { bichosMalos.forEach{bicho => bicho.moverAleatorio()} })
 		
