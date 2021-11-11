@@ -24,15 +24,15 @@ Entre nosotres alumnes consideramos que debíamos brindarle a Gerardo una nutric
 
 ### Comentario sobre Pepucha:
 
-Pepucha es un bicho especial ¡Un bicho bueno!. Si Gerardo se para sobre ella suma 10 de energia pero le saca esos 10 a ella y cuando se le termine la energia no le puede sacar más.
+Pepucha es un bicho especial ¡Un bicho bueno!. Si Gerardo se para sobre Pepucha suma 10 de energia pero le saca esos 10 a ella, teniendo un límite de 50 puntos de energía y 100 puntos de salud para dar, con lo cual cuando se le termine la energia, Gerardo no le puede pedir más.
 
 En cambio, si Gerardo agarra a pepucha hay dos casos a contemplar:
 
-* Si la agarra y nunca se paró sobre ella recupera la totalidad de su salud.
+* Si la agarra y nunca se paró sobre ella, Pepucha le da a Gerardo toda la salud que tiene en stock, eso si, despues agua y ajo (o agua y garbanzo... ¿?) pues pepucha se queda sin energía y salud para dar!.
     
-* Si ya se paró sobre ella recupera un 20% menos de salud por cada vez que se haya parado.
+* Si ya se paró sobre ella en algún momento, Gerardo puede obtener de Pepucha un 20% menos de salud por cada vez que se haya parado.
     
 
 Es decir, si Gerardo se para una vez sobre ella, recupera 10 puntos de energia y si después la agarra, en vez de recuperar 100 puntos de salud, recupera 80.
 
-En ambos casos si se queda sin energia o sin salud para dar, Gerardo la agarra ¡Se manda a volar! Pero tranqui que se queda viendo que no pierdas el juego...
+En ambos casos, si Gerardo la agarra, se queda sin energia o sin salud para dar ¡y Se manda a volar! Pero tranqui que se queda revoloteando por ahí, cersiorándose de que Gerardo no pierda el juego!
