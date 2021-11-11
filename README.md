@@ -24,7 +24,7 @@ Entre nosotres alumnes consideramos que debíamos brindarle a Gerardo una nutric
 
 ### Comentario sobre Pepucha:
 
-Pepucha es un bicho especial ¡Un bicho bueno!. Si Gerardo se para sobre ella suma 10 de energia pero le saca esos 10 a ella y cuando se le termine la energia no le puede sacar más.
+Pepucha es un bicho especial ¡Un bicho bueno!. Si Gerardo se para sobre ella suma 10 de energia pero le saca esos 10 a ella, teniendo un límite de 50 puntos de energía y 100 puntos de salud para dar, con lo cual cuando se le termine la energia, Gerardo no le puede pedir más.
 
 En cambio, si Gerardo agarra a pepucha hay dos casos a contemplar:
 
