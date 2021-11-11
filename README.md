@@ -28,7 +28,7 @@ Pepucha es un bicho especial ¡Un bicho bueno!. Si Gerardo se para sobre ella su
 
 En cambio, si Gerardo agarra a pepucha hay dos casos a contemplar:
 
-* Si la agarra y nunca se paró sobre ella, Pepucha le da a Gerardo toda la salud que puede darle, eso si, despues agua y ajo pues pepucha se queda sin energía y salud para dar!.
+* Si la agarra y nunca se paró sobre ella, Pepucha le da a Gerardo toda la salud que tiene en stock, eso si, despues agua y ajo (o agua y garbanzo... ¿?) pues pepucha se queda sin energía y salud para dar!.
     
 * Si ya se paró sobre ella recupera un 20% menos de salud por cada vez que se haya parado.
     
