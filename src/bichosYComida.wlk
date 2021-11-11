@@ -214,6 +214,11 @@ class Pepucha inherits Bicho {
 	var energiaParaDar = 50
 	var saludParaDar = 100
 	
+	method setPepucha() {
+		energiaParaDar = 50
+		saludParaDar = 100
+	}
+	
 	override method saludQueQuita() = 0
 	
 	override method image() = "pepucha.png"
@@ -273,37 +278,5 @@ class Pepucha inherits Bicho {
 		saludParaDar = 0
 		game.say(gerardo, "Te dejo volar tranquila pepucha!")
 		game.say(self, "Urru Urru!")
-
-
 	}
 }
-
-
-
-
-
-/*
- * 
- * funcion mariel() {
- * 		if mariel.quiereCafe() {
- * 				hacerCafe()
- * 		else {
- * 			mariel()	
- * 		}	
- * }
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- */
-
-
-
-
