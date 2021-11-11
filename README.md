@@ -35,4 +35,4 @@ En cambio, si Gerardo agarra a pepucha hay dos casos a contemplar:
 
 Es decir, si Gerardo se para una vez sobre ella, recupera 10 puntos de energia y si después la agarra, en vez de recuperar 100 puntos de salud, recupera 80.
 
-En ambos casos si se queda sin energia o sin salud para dar, Gerardo la agarra ¡Se manda a volar! Pero tranqui que se queda viendo que no pierdas el juego...
+En ambos casos, si Gerardo la agarra, se queda sin energia o sin salud para dar ¡y Se manda a volar! Pero tranqui que se queda revoloteando por ahí, cersiorándose de que Gerardo no pierda el juego!
