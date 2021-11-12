@@ -3,6 +3,7 @@ import celdasEspeciales.*
 import gerardo.*
 import direcciones.*
 import utilidades.*
+import nivel2.*
 
 class Elemento {
 	var property position = game.center()
@@ -171,3 +172,27 @@ class Caja inherits Elemento {
 		return hayCeldaLibre
 	}
 }
+
+object puertaNivel2 inherits Elemento{
+	var property estaEnElNivel = false
+	
+	method image() = "puerta.png"
+	
+	override method interactuar() {
+		game.say(self, "Felicitaciones!")
+		game.schedule(2000, finNivel2.configurate())
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+

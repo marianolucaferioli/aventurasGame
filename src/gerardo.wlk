@@ -6,7 +6,6 @@ import nivelPerder.*
 object gerardo {
 	var property energia = 0
 	var property salud = 0
-	var property dinero = 0
 	var property position = game.center()
 	var property llavesEncontradas = 0
 	var property llavesEntregadas = 0

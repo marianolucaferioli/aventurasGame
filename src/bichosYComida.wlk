@@ -22,7 +22,7 @@ class Comida inherits Elemento {
 		game.removeVisual(self)
 	}
 	
-	method moverAleatorio() {}
+	method moverAleatorio() {}		// comentar a ver si rompe
 }
 
 /** **************************************************** **/
@@ -31,7 +31,7 @@ class Garbanzo inherits Comida {
 	
 	override method image() = "garbanzo.png"
 	
-	override method energiaPorUnidad() = 0
+	override method energiaPorUnidad() = 10
 	
 	override method saludPorUnidad() = 10
 }
@@ -42,7 +42,7 @@ class Empanada inherits Comida {
 	
 	override method image() = "empanada.png"
 	
-	override method energiaPorUnidad() = 10
+	override method energiaPorUnidad() = 15
 	
 	override method saludPorUnidad() = 0
 }
@@ -64,7 +64,7 @@ class Cocacola inherits Comida {
 	
 	override method energiaPorUnidad() = 20
 	
-	override method saludPorUnidad() = 20
+	override method saludPorUnidad() = 0
 }
 
 // Corazón
@@ -76,6 +76,14 @@ class Corazon inherits Comida {
 	override method energiaPorUnidad() = 0
 	
 	override method saludPorUnidad() = 25
+	
+	override method serAgarrado() {}
+	
+	override method interactuar() {
+		gerardo.sumarSalud(self.saludPorUnidad())
+		game.say(gerardo, "Milagro!")
+		game.removeVisual(self)
+	}
 }
 
 
@@ -292,61 +300,76 @@ class Pepucha inherits Bicho {
 	}
 }
 
-/** Bichos nivel 2 - alumnos */
 
-class Gero inherits Bicho {
-	
-	override method image() = "gero.png"
-	
-	override method saludQueQuita() = 15
+
+/** Alumnos */
+
+class Alumno inherits Bicho {
 	
 	override method interactuar() {
 		gerardo.restarSalud(self.saludQueQuita())
 		gerardo.sumarMoneda(1)
-		game.say(gerardo, "Gerardo querido toma 15 pesos!")
-		game.schedule(2000, {game.removeVisual(self)})
+		estaEnElNivel = false
+		game.removeVisual(self)
+	}
+	
+	method atrapameSiPodes() {
+		if (estaEnElNivel) {
+			game.say(self, "Atrapeme si puede!")
+		}
 	}
 }
 
-class Marian inherits Bicho {
+/** Bichos nivel 2 - alumnos */
+
+object gero inherits Alumno {
+	
+	override method image() = "gero.png"
+	
+	override method saludQueQuita() = 50
+	
+	override method interactuar() {
+		super()
+		game.say(gerardo, "Me llevo esto Gero!")
+	}
+	
+}
+
+object marian inherits Alumno {
 	
 	override method image() = "marian.png"
 	
-	override method saludQueQuita() = 20
+	override method saludQueQuita() = 40
 	
 	override method interactuar() {
-		gerardo.restarSalud(self.saludQueQuita())
-		gerardo.sumarMoneda(1)
-		game.say(gerardo, "Profe! ojalá le alcancen 20... ")
-		game.schedule(2000, {game.removeVisual(self)})
+		super()
+		game.say(gerardo, "Gracias Marian!")
 	}
+	
 }
 
-class Enzo inherits Bicho {
+object enzo inherits Alumno {
 	
-	override method image() = "gero.png"
+	override method image() = "enzo.png"
 	
 	override method saludQueQuita() = 30
 	
 	override method interactuar() {
-		gerardo.restarSalud(self.saludQueQuita())
-		gerardo.sumarMoneda(1)
-		game.say(gerardo, "Ahí van 10!")
-		game.schedule(2000, {game.removeVisual(self)})
+		super()
+		game.say(gerardo, "Te cabió Enzo!")
 	}
+	
 }
 
-class Cande inherits Bicho {
+object cande inherits Alumno {
 	
-	override method image() = "gero.png"
+	override method image() = "cande.png"
 	
-	override method saludQueQuita() = 15
+	override method saludQueQuita() = 25
 	
 	override method interactuar() {
-		gerardo.restarSalud(self.saludQueQuita())
-		gerardo.sumarMoneda(1)
-		game.say(gerardo, "Profesor!, acá tiene 50 pesos.")
-		game.schedule(2000, {game.removeVisual(self)})
+		super()
+		game.say(gerardo, "Alumna Candela, muy amable!")
 	}
 }
 
