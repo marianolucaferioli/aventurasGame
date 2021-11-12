@@ -31,8 +31,10 @@ object interfazInicioNivel1 {
 			imagen = "comienzo_nivel1_1.png"
 		} else if (seleccion == "comienzo_2") {
 			imagen = "comienzo_nivel1_2.png"
+		} else if (seleccion == "comienzo_3") {
+			imagen = "comienzo_nivel1_3.png"
 		}
-		return imagen
+		return imagen 
 	}
 	
 	method seleccionar(opcion) {
@@ -43,6 +45,8 @@ object interfazInicioNivel1 {
 		if (seleccion == "comienzo_1") {
 			self.seleccionar("comienzo_2")
 		} else if (seleccion == "comienzo_2") {
+			self.seleccionar("comienzo_3")
+		} else if (seleccion == "comienzo_3") {
 			game.clear()
 			nivel1.configurate()
 		}
@@ -178,7 +182,7 @@ object nivel1 {
 		
 		// esto si se quiere setear
 		gerardo.position(game.center())
-		gerardo.ultimoCostado(right)
+		gerardo.direccion(right)
 	}
 	
 	method agregarBarra() {

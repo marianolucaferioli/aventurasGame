@@ -11,17 +11,22 @@ object gerardo {
 	var property llavesEncontradas = 0
 	var property llavesEntregadas = 0
 	var property cajasEncontradas = 0
+	var property monedas = 0
 	
 	var property direccion = right
-	var property ultimoCostado = right
 	
 	method image() {		// solo contempla si mira a la derecha o izquierda
 		var imagen			// si se corrige --> sacar de moveRight() y moveLeft()
 		
-		if (ultimoCostado.isRight()) {
-			imagen = "gerardoderecha.png" 
-		} else { // si es left
-			imagen = "gerardoizquierda.png" 
+		
+		if (direccion.isUp()) {
+			imagen = "gerardoarriba.png"
+		} else if (direccion.isDown()) {
+			imagen = "gerardoabajo.png"
+		} else if (direccion.isRight()) {
+			imagen = "gerardoderecha.png"
+		} else if (direccion.isLeft()) {
+			imagen = "gerardoizquierda.png"
 		}
 		return imagen
 	}
@@ -44,10 +49,6 @@ object gerardo {
 	
 	method restarEnergia(cantidad) { energia = (energia - cantidad).max(0) }
 	
-	method sumarDinero(cantidad) { dinero = (dinero + cantidad).min(30) }
-	
-	method restarDinero(cantidad) { dinero = (dinero - cantidad).max(0) }
-	
 	/** ************************************ **/
 	
 	// Interaccion con objetos
@@ -59,6 +60,10 @@ object gerardo {
 	// Cajas
 	method sumarCajas(cant) { 
 		cajasEncontradas += cant
+	}
+	
+	method sumarMoneda(cant) {
+		monedas += cant
 	}
 	
 	method entregarLlaves() {
@@ -136,7 +141,6 @@ object gerardo {
 		self.restarEnergia(1)
 	
 		direccion = right
-		ultimoCostado = right // para imagen
 	}
 	
 	method moveLeft() {
@@ -148,7 +152,6 @@ object gerardo {
 		self.restarEnergia(1)
 		
 		direccion = left
-		ultimoCostado = left // para imagen
 	}
 	
 	method agarrar() {

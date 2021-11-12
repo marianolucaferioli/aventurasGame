@@ -180,7 +180,34 @@ object contadorDinero2 inherits ElementoDeBarra {
 		return imagen
 	} 
 }
+// Monedas
+object cont_moneda1 inherits ElementoDeBarra {
+	
+	override method position() = game.at(6,14)
+	
+	override method image() = "contadorMonedita.png"
+}
 
+object cont_moneda2 inherits ElementoDeBarra {
+	
+	override method position() = game.at(7,14)
+	
+	override method image() = "contadorMonedita.png"
+}
+
+object cont_moneda3 inherits ElementoDeBarra {
+	
+	override method position() = game.at(8,14)
+	
+	override method image() = "contadorMonedita.png"
+}
+
+object cont_moneda4 inherits ElementoDeBarra {
+	
+	override method position() = game.at(9,14)
+	
+	override method image() = "contadorMonedita.png"
+}
 
 // Llaves encontradas
 object cont_llave1 inherits ElementoDeBarra {

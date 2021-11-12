@@ -32,7 +32,7 @@ object nivel2 {
 		
 		// esto si se quiere setear
 		gerardo.position(game.center())
-		gerardo.ultimoCostado(right)
+		gerardo.direccion(right)
 		
 		keyboard.up().onPressDo({ gerardo.move(up)})
 		keyboard.down().onPressDo({gerardo.move(down)})
@@ -52,6 +52,9 @@ object nivel2 {
 
 		// Gerardo
 		game.addVisual(gerardo)
+		gerardo.salud(100)
+		gerardo.energia(50)
+		gerardo.monedas(0)
 		
 		// Reinicio nivel
 		keyboard.r().onPressDo({	
@@ -60,3 +63,22 @@ object nivel2 {
 		})
 	}
 }
+
+
+
+
+
+
+
+/**
+
+
+implementar alumnos
+--> alumnos.interactuar --> resta salud Y da moneda
+
+--> mostrar monedas
+
+--> tras obtencion 4 monedas aparece puerta --> ganar nivel
+
+--> agregar corazones
+ */
