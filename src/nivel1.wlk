@@ -11,7 +11,7 @@ import bichosYComida.*
 import sonidos.*
 
 object inicioNivel1 {
-	method configurate() {
+	method configurate() { 
 		
 		game.addVisual(interfazInicioNivel1)
 		

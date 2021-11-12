@@ -11,12 +11,40 @@ import nivelPerder.*
 
 object inicioNivel2 {
 	method configurate() {
-		game.addVisual(new FondoNivel(position = game.at(0,0), image = "comienzo_nivel2.png"))
 		
-		keyboard.enter().onPressDo({
+		game.addVisual(interfazInicioNivel2)
+		
+		keyboard.enter().onPressDo({ interfazInicioNivel2.seleccionar() })
+	}
+}
+
+object interfazInicioNivel2 {
+	var property seleccion = "comienzo_1"
+	
+	method position() = game.at(0,0)
+	
+	method image() {
+		var imagen
+		
+		if (seleccion == "comienzo_1") {
+			imagen = "comienzo_nivel2_1.png"
+		} else if (seleccion == "comienzo_2") {
+			imagen = "comienzo_nivel2_2.png"
+		} else if (seleccion == "comienzo_3") {
+			imagen = "comienzo_nivel2_3.png"
+		}
+		return imagen 
+	}
+	
+	method seleccionar() {
+		if (seleccion == "comienzo_1") {
+			self.seleccion("comienzo_2")
+		} else if (seleccion == "comienzo_2") {
+			self.seleccion("comienzo_3")
+		} else if (seleccion == "comienzo_3") {
 			game.clear()
 			nivel2.configurate()
-		})
+		}
 	}
 }
 
@@ -148,7 +176,7 @@ object nivel2 {
 	
 	method perderALaFuerza() {
 		game.say(gerardo, "Que alumnos malos!")
-			game.schedule(1000, {
+			game.schedule(2000, {
 				game.clear()
 				nivelPerder.configurate()
 			})
@@ -156,8 +184,8 @@ object nivel2 {
 	
 	method perderSiCorresponde() {
 		if (gerardo.salud() == 0 or gerardo.energia() == 0) {
-			game.say(gerardo, "Ay la Pepucha!")
-			game.schedule(1000, {
+			game.say(gerardo, "Pero que alumnos malos!")
+			game.schedule(3000, {
 				game.clear()
 				nivelPerder.configurate()
 			})
