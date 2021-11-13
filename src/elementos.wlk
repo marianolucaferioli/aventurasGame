@@ -5,15 +5,17 @@ import direcciones.*
 import utilidades.*
 import nivel2.*
 
-class Elemento {
-	var property position = game.center()
+class Elemento {				/** Clase padre (abstracta) */
 	
-	method puedeSuperponer() = false
+	var property position = game.center()		// Inicia el en centro para luego darle una posicion aleatoria
 	
-	method sePuedePisar() = false
+	method puedeSuperponer() = false		// ver elemento.setNewRandomPosition() (ln. 30)
+	
+	method sePuedePisar() = false			// ver bicho.moverAleatorio()
 	
 	/** ************************** **/
 	
+	// Validaciones de tipos
 	method esCaja() = false
 	
 	method esLlave() = false
@@ -69,13 +71,17 @@ class Deposito inherits Elemento {
 	
 	method image() = "deposito.png"
 	
-	override method sePuedePisar() = true
+	// Permite que elementos pasen SOBRE el
+	override method sePuedePisar() = true		
 	
-	override method ingresarCaja() {
+	// ver nivel1 --> depósito.onCollideDo(caja -> ingresarCaja())
+	override method ingresarCaja() {			
+		// tener en cuenta que no es posible ingresar mas de una caja a la vez
 		const cajas = game.getObjectsIn(self.position()).filter({objeto => objeto.esCaja()})
 		
 		cajasRecuperadas += cajas.size()
 		gerardo.sumarCajas(cajas.size())
+		
 		cajas.forEach{caja => game.removeVisual(caja)}
 		
 		if (gerardo.puedeGanarNivel1()) {
@@ -84,10 +90,10 @@ class Deposito inherits Elemento {
 			game.say(gerardo, "Atroden la caja!")
 			game.say(self, "Gracias viejo!")
 		}
-		
 	}
 	
 	override method interactuar() {
+		// interactua tantas veces como llaves tenga
 		if (gerardo.llavesEncontradas() > 0) {
 			self.agarrarLlaves()
 			self.interactuar()
@@ -110,6 +116,7 @@ class Caja inherits Elemento {
 	override method esCaja() = true
 	
 	override method interactuar() {
+		// Efecto pacman de las cajas
 		if (self.hayCeldaLibreAl(gerardo.direccion())) {
 			self.move(gerardo.direccion())
 		} else {
@@ -158,6 +165,7 @@ class Caja inherits Elemento {
 	}
 		
 	method hayCeldaLibreAl(dir) {
+		// Si en la direccion en la que se mueve hay algun elemento que no se puede pisar retorna falso
 		var hayCeldaLibre = true
 		
 		if (dir.isUp()) {
@@ -179,6 +187,7 @@ object puertaNivel2 inherits Elemento{
 	method image() = "puerta.png"
 	
 	override method interactuar() {
+		/** Notar que permite interactuar únicamente si Gerardo puede ganar el nivel 2 ( ver nivel2 --> aparecerPuerta() ) */
 		game.say(self, "Felicitaciones!")
 		game.schedule(2000, finNivel2.configurate())
 	}

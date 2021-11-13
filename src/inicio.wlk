@@ -6,6 +6,14 @@ import sonidos.*
 object inicio {
 	method configurate() {
 		
+		/** 
+
+			Configuración inicial
+			Cada elemento de la interfaz pretende conformar un menú interactivo para el inicio
+			de cada nivel del juego:  ver interfazInicio.image() y la interaccion con la tecla enter.
+
+		*/
+		
 		game.addVisual(interfazInicio)
 			
 		keyboard.up().onPressDo({interfazInicio.seleccionar("seleccionar_iniciar")})

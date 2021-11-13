@@ -3,7 +3,7 @@ import gerardo.*
 import elementos.*
 import direcciones.*
 
-class Comida inherits Elemento {
+class Comida inherits Elemento {			/** Clase padre (abstracta) */
 
 	method image()
 
@@ -25,7 +25,7 @@ class Comida inherits Elemento {
 	}
 
 	method moverAleatorio() {
-	} // comentar a ver si rompe
+	}
 
 }
 
@@ -93,7 +93,7 @@ class Corazon inherits Comida {
 }
 
 /** *********************************************************************** **/
-class Bicho inherits Elemento {
+class Bicho inherits Elemento {			/** Clase padre (abstracta) */
 
 	var estaEnElNivel = true
 
@@ -232,7 +232,7 @@ class Mosquito inherits Bicho {
 }
 
 /** *********************************************************************** **/
-class Pepucha inherits Bicho {
+object pepucha inherits Bicho {
 
 	var energiaParaDar = 50
 	var saludParaDar = 100
@@ -256,24 +256,24 @@ class Pepucha inherits Bicho {
 	 * sobre Pepucha suma 10 de energia pero le saca esos 10 a ella, teniendo un límite de 50 puntos de energía y 
 	 * 100 puntos de salud para dar, con lo cual cuando se le termine la energia, Gerardo no le puede pedir más.
 	 * 
-	 * En cambio, si Gerardo agarra a pepucha hay dos casos a contemplar:
+	 * En cambio, si Gerardo agarra a pepucha obtiene toda la salud que puede darle, pero hay dos casos a contemplar:
 	 * 
 	 * Si la agarra y nunca se paró sobre ella, Pepucha le da a Gerardo toda la salud que tiene en stock, eso si, 
 	 * despues agua y ajo (o agua y garbanzo... ¿?) pues pepucha se queda sin energía y salud para dar!.
 	 * 
 	 * Si ya se paró sobre ella en algún momento, Gerardo puede obtener de Pepucha un 20% menos de salud por cada 
-	 * vez que se haya parado.
+	 * vez que se haya parado sobre ella.
 	 * 
 	 * Es decir, si Gerardo se para una vez sobre ella, recupera 10 puntos de energia y si después la agarra, en vez 
 	 * de recuperar 100 puntos de salud, recupera 80.
 	 * 
-	 * En ambos casos, si Gerardo la agarra, se queda sin energia o sin salud para dar ¡y Se manda a volar! Pero tranqui 
+	 * En ambos casos, si Gerardo la agarra, se queda sin energia o sin salud para dar ¡Se manda a volar! Pero tranqui 
 	 * que se queda revoloteando por ahí, cersiorándose de que Gerardo no pierda el juego!
 	 * 	
 	 */
 	override method esComida() = true // Gerardo puede agarrarla
 
-	override method esBicho() = true // Puede chocar con gerardo
+	override method esBicho() = true //	Gerardo puede chocar con ella
 
 	override method interactuar() {
 		if (self.tieneEnergia() and self.tieneSalud()) {
@@ -303,10 +303,13 @@ class Pepucha inherits Bicho {
 }
 
 /** Alumnos */
-class Alumno inherits Bicho {
-
+class Alumno inherits Bicho {		/** Clase padre (abstracta) */
 	var monedaParaDar = 1
 
+	/** 
+		Notar que se agrega el "monedaParaDar = 0" en caso de que la ejecución tarde y 
+		Gerardo se pare mas de una vez sobre algune alumne dandole este mas de una moneda.
+ 	*/
 	override method interactuar() {
 		estaEnElNivel = false
 		gerardo.restarSalud(self.saludQueQuita())
@@ -322,11 +325,11 @@ class Alumno inherits Bicho {
 		}
 	}
 
-	method mensajeGerardo()
+	method mensajeGerardo()		// Ver cada alumno en particular
 
 }
 
-/** Bichos nivel 2 - alumnos */
+/** Bichos nivel 2 - alumnos del grupo "Eterno resplandor de una Pepucha sin recuerdos" */
 object gero inherits Alumno {
 
 	override method image() = "gero.png"

@@ -4,10 +4,10 @@ import celdasEspeciales.*
 import barrasSuperiores.*
 import elementos.*
 import direcciones.*
-import nivel2.*
-import nivelPerder.*
 import fondo.*
 import bichosYComida.*
+import nivelPerder.*
+import nivel2.*
 import sonidos.*
 
 object inicioNivel1 {
@@ -36,16 +36,12 @@ object interfazInicioNivel1 {
 		}
 		return imagen 
 	}
-	
-	method seleccionar(opcion) {
-		seleccion = opcion
-	}
-	
+
 	method seleccionar() {
 		if (seleccion == "comienzo_1") {
-			self.seleccionar("comienzo_2")
+			self.seleccion("comienzo_2")
 		} else if (seleccion == "comienzo_2") {
-			self.seleccionar("comienzo_3")
+			self.seleccion("comienzo_3")
 		} else if (seleccion == "comienzo_3") {
 			game.clear()
 			nivel1.configurate()
@@ -53,13 +49,15 @@ object interfazInicioNivel1 {
 	}
 }
 
+/** ************************* INICIO DE NIVEL1 ************************** **/
+
 object nivel1 {
 	method configurate() {
 		
-		// Fondo
+		/** Fondo nivel */
 		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ladrillo.png"))
 		
-		// Celdas especiales
+		/** Celdas especiales */
 		const celdaBuena = new CeldaBuena()
 		const celdaMala = new CeldaMala()
 		const celdaDeAparicion = new CeldaDeAparicion()
@@ -67,24 +65,28 @@ object nivel1 {
 		
 		const celdasEspeciales = #{celdaBuena, celdaMala, celdaDeAparicion, celdaDeTeletransportacion}
 		
+		/** Depósitos */ 
 		const depo1 = new Deposito(llavesRecuperadas = 0, cajasRecuperadas = 0)
 		const depo2 = new Deposito(llavesRecuperadas = 0, cajasRecuperadas = 0)
 		const depo3 = new Deposito(llavesRecuperadas = 0, cajasRecuperadas = 0)
 		
 		const depositos = #{depo1, depo2, depo3}
 		
+		/** Cajas */
 		const caja1 = new Caja() 
 		const caja2 = new Caja()
 		const caja3 = new Caja()
 		
 		const cajas = #{caja1, caja2, caja3}
 		
+		/** Llaves */
 		const llave1 = new Llave()
 		const llave2 = new Llave()
 		const llave3 = new Llave()
 		
 		const llaves = #{llave1, llave2, llave3}
 		
+		/** Bichos */
 		const pulga = new Pulga()
 		const garrapata = new Garrapata()
 		const cucaracha = new Cucaracha()
@@ -92,6 +94,7 @@ object nivel1 {
 		
 		const bichosMalos = #{pulga, garrapata, cucaracha, mosquito}
 		
+		/** Comida */
 		const garbanzo = new Garbanzo()	
 		const empanada = new Empanada()
 		const birra = new Birra()
@@ -99,20 +102,23 @@ object nivel1 {
 		
 		const comidas = #{garbanzo, empanada, birra, cocacola}
 		
-		const pepucha = new Pepucha()
+		/** Pepucha */
+		//const pepucha = new Pepucha()
 	
-		/////////
+		///////////////////////////////////////////////////////////////
 		
+		/**  Agregado de elementos */
 		celdasEspeciales.forEach{celda => game.addVisual(celda)}
 		cajas.forEach{caja => game.addVisual(caja)}
 		depositos.forEach{depo => game.addVisual(depo)}
 		llaves.forEach{llave => game.addVisual(llave)}
 		bichosMalos.forEach{bicho => game.addVisual(bicho)}
 		comidas.forEach{comida => game.addVisual(comida)}
-		
-		
+
+		/** Agregado de pepucha */
 		game.addVisual(pepucha)
 		
+		/** Seteo de posiciones aleatorias según parámetros especificados */ 
 		celdasEspeciales.forEach{celda => celda.setNewRandomPosition()}
 		cajas.forEach{caja => caja.setNewRandomPosition()}
 		depositos.forEach{depo => depo.setNewRandomPosition()}
@@ -120,53 +126,53 @@ object nivel1 {
 		bichosMalos.forEach{bicho => bicho.setNewRandomPosition()}
 		comidas.forEach{comida => comida.setNewRandomPosition()}
 		
+		/** Seteo de atributes y posición de Pepucha */
 		pepucha.setNewRandomPosition()
 		pepucha.setPepucha()
 		
-		//game.onTick(3000, "Movimiento bichos", { bichosMalos.forEach{bicho => bicho.moverAleatorio()} })
-		
+		/** Activacion del movimiento aleatorio para "bichos" */
 		self.moverAleatorio(pepucha, 1000)
 		
 		bichosMalos.forEach{ bicho => bicho.moverAleatorioCada(1000) }		// SI ROMPE SACAR
 		 
 		/////////
 		
+		/** Seteo de atributos de gerardo y agregado de barra superior */
 		self.setGerardo()
-		
 		self.agregarBarra()
 		
-		// Gerardo
+		/** Agregado de Gerardo e interacción con los objetos */	
 		game.addVisual(gerardo)
 		
-		// Collide(s)
 		game.onCollideDo(gerardo, {objeto => gerardo.interactuar(objeto)})
-		// funciona porque solo acepta cajas ( method esCaja() )
+		// Unicamente funciona con elementos que son "caja"
 		cajas.forEach{caja => game.onCollideDo(caja, {depo => depo.ingresarCaja()})}
 		
 		
-		// Movimiendo Gerardo
+		/** Definicion de teclas */
 		keyboard.up().onPressDo({ gerardo.move(up) })
 		keyboard.down().onPressDo({ gerardo.move(down) })
 		keyboard.right().onPressDo({ gerardo.move(right) })
 		keyboard.left().onPressDo({ gerardo.move(left) })
 		
+		// Agarra elementos agarrables
 		keyboard.e().onPressDo({  gerardo.agarrar() })
-		
-		keyboard.r().onPressDo({ self.restart() })
-		
-		game.onTick(1, "Ganar o Perder", { self.ganarSiCorresponde() })
-		
-		game.onTick(1, "Perder si corresponde", { self.perderSiCorresponde() })
-		
-		game.onTick(1, "Mostrar llaves", { self.mostrarLlaves()})
-		
-		game.onTick(1, "Mostrar cajas", { self.mostrarCajas() })
-		
+		// Resetea el nivel acutal
+		keyboard.r().onPressDo({ self.restart() })		
 		// Para probar ganar
 		keyboard.t().onPressDo({self.ganarALaFuerza()})
 		// Para probar perder
 		keyboard.y().onPressDo({self.perderALaFuerza()})
 		
+		/** Mostrar llaves y cajas recuperadas */
+		game.onTick(1, "Mostrar llaves", { self.mostrarLlaves()})
+		
+		game.onTick(1, "Mostrar cajas", { self.mostrarCajas() })
+		
+		/** Ganar o perder cuando corresponda */
+		game.onTick(1, "Ganar", { self.ganarSiCorresponde() })
+		
+		game.onTick(1, "Perder", { self.perderSiCorresponde() })
 	}
 	
 		/** ******************************** **/
@@ -180,7 +186,7 @@ object nivel1 {
 		gerardo.cajasEncontradas(0)
 		gerardo.llavesEntregadas(0)
 		
-		// esto si se quiere setear
+		// Posición y dirección
 		gerardo.position(game.center())
 		gerardo.direccion(right)
 	}
@@ -214,13 +220,9 @@ object nivel1 {
 		self.configurate()
 	}
 	
-	method perderSiCorresponde() {
-		if (gerardo.salud() == 0) {
-			game.say(gerardo, "Ay la Pepucha!")
-			game.schedule(1000, {
-				game.clear()
-				nivelPerder.configurate()
-			})
+	method moverAleatorio(objeto, milisegundos) {
+		if (game.hasVisual(objeto)) {
+			game.onTick(milisegundos, "Movimiento aleatorio", { objeto.moverAleatorio() })
 		}
 	}
 	
@@ -236,9 +238,13 @@ object nivel1 {
 		}
 	}
 	
-	method moverAleatorio(objeto, milisegundos) {
-		if (game.hasVisual(objeto)) {
-			game.onTick(milisegundos, "Movimiento aleatorio", { objeto.moverAleatorio() })
+	method perderSiCorresponde() {
+		if (gerardo.salud() == 0) {
+			game.say(gerardo, "Ay la Pepucha!")
+			game.schedule(1000, {
+				game.clear()
+				nivelPerder.configurate()
+			})
 		}
 	}
 	
@@ -261,16 +267,17 @@ object nivel1 {
 	}
 }
 
-/** *********************************************************************** **/
+/** ********************** FIN DEL NIVEL 1 CONFIGURACION DEL 2 ************************** **/
 
 object finNivel1 {
 	method configurate() {
+		
 		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ganarNivel1.png"))
 		
 		keyboard.enter().onPressDo({
 			game.clear()
 			inicioNivel2.configurate()
-			musicaFondoNivel1.parar() //para la música de fondo
+			musicaFondoNivel1.parar()
 			musicaFondoNivel2.sonar()
 		})
 	}

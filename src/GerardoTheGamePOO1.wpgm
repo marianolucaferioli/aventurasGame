@@ -6,6 +6,8 @@ import nivel2.*
 
 program Gerardo {
 	
+	/** Configuracion inicial --> título, altura, tamaño de celda y configuracion del inicio */
+	
 	game.title("Gerardo")
 	game.height(15)
 	game.width(15)

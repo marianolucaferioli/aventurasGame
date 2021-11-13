@@ -1,5 +1,7 @@
 import wollok.game.*
 
+/** Configuración de la música del juego */
+
 object musicaFondoNivel1{
 	const musica = game.sound("8bit1.mp3")
 	

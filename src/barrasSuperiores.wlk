@@ -1,7 +1,13 @@
 import wollok.game.*
 import gerardo.*
 
-class ElementoDeBarra {
+class ElementoDeBarra {		/** Clase padre (abstracta) */
+	
+	/** 
+		Notar que ElementoDeBarra no hereda de Elemento (ver elementos.wlk), 
+		pues no lo necesita.
+		No es posible que elementos del juego pisen elementos de la barra.
+	 */
 	
 	method position()
 	
@@ -12,7 +18,7 @@ class ElementoDeBarra {
 	method puedeSuperponer() = false
 }
 
-object barraDeSalud inherits ElementoDeBarra {
+object barraDeSalud inherits ElementoDeBarra {		/** Muestra una barra de salud de 5 bloques --> ver image() */
 	
 	override method position() = game.at(0, game.height()-1)
 	
@@ -74,7 +80,7 @@ object contadorEnergia2 inherits ElementoDeBarra {
 		const energia = gerardo.energia()
 		var digito = 0 
 		
-		if (energia.between(40,49)) {
+		if (energia.between(40,49)) {			// Define el dígito
 			digito = energia - 40
 		} else if (energia.between(30,39)) {
 			digito = energia - 30
@@ -86,7 +92,7 @@ object contadorEnergia2 inherits ElementoDeBarra {
 			digito = energia
 		}
 		
-		if (digito == 9) {
+		if (digito == 9) {						// Imagen según dígito
 			imagen = "9.png"
 		} else if (digito == 8) {
 			imagen = "8.png"
@@ -111,8 +117,51 @@ object contadorEnergia2 inherits ElementoDeBarra {
 	} 
 }
 
-// Monedas
-object cont_moneda1 inherits ElementoDeBarra {
+////////////////
+
+object cont_llave1 inherits ElementoDeBarra {				/** 3 llaves para nivel 1 */
+	
+	override method position() = game.at(5,14)
+	
+	override method image() = "contadorLlavecita.png"
+}
+
+object cont_llave2 inherits ElementoDeBarra {
+	
+	override method position() = game.at(6,14)
+	
+	override method image() = "contadorLlavecita.png"
+}
+
+object cont_llave3 inherits ElementoDeBarra {
+	
+	override method position() = game.at(7,14)
+	
+	override method image() = "contadorLlavecita.png"
+}
+
+object cont_caja1 inherits ElementoDeBarra {				/** 3 cajas para nivel 1 */
+	
+	override method position() = game.at(8,14)
+	
+	override method image() = "contadorCaja.png"
+}
+
+object cont_caja2 inherits ElementoDeBarra {
+	
+	override method position() = game.at(9,14)
+	
+	override method image() = "contadorCaja.png"
+}
+
+object cont_caja3 inherits ElementoDeBarra {
+	
+	override method position() = game.at(10,14)
+	
+	override method image() = "contadorCaja.png"
+}
+
+object cont_moneda1 inherits ElementoDeBarra {				/** 4 monedas para nivel 2 */
 	
 	override method position() = game.at(6,14)
 	
@@ -138,48 +187,4 @@ object cont_moneda4 inherits ElementoDeBarra {
 	override method position() = game.at(9,14)
 	
 	override method image() = "contadorMonedita.png"
-}
-
-// Llaves encontradas
-object cont_llave1 inherits ElementoDeBarra {
-	
-	override method position() = game.at(5,14)
-	
-	override method image() = "contadorLlavecita.png"
-}
-
-object cont_llave2 inherits ElementoDeBarra {
-	
-	override method position() = game.at(6,14)
-	
-	override method image() = "contadorLlavecita.png"
-}
-
-object cont_llave3 inherits ElementoDeBarra {
-	
-	override method position() = game.at(7,14)
-	
-	override method image() = "contadorLlavecita.png"
-}
-
-// Cajas encontradas
-object cont_caja1 inherits ElementoDeBarra {
-	
-	override method position() = game.at(8,14)
-	
-	override method image() = "contadorCaja.png"
-}
-
-object cont_caja2 inherits ElementoDeBarra {
-	
-	override method position() = game.at(9,14)
-	
-	override method image() = "contadorCaja.png"
-}
-
-object cont_caja3 inherits ElementoDeBarra {
-	
-	override method position() = game.at(10,14)
-	
-	override method image() = "contadorCaja.png"
 }

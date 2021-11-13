@@ -1,13 +1,14 @@
 import wollok.game.*
 import gerardo.*
 import celdasEspeciales.*
-import utilidades.*
 import barrasSuperiores.*
 import elementos.*
 import direcciones.*
 import fondo.*
 import bichosYComida.*
 import nivelPerder.*
+//import nivel3.*
+
 
 object inicioNivel2 {
 	method configurate() {
@@ -48,17 +49,18 @@ object interfazInicioNivel2 {
 	}
 }
 
-/** *********************************************************************** **/
+/** ************************* INICIO DE NIVEL2 ************************** **/
 
 object nivel2 {
 	method configurate() {
 		
-		// Fondo
+		/** Fondo nivel */
 		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ladrillo.png"))
 		
-		// Bichos
+		/** Bichos */
 		const alumnos = #{cande, marian, gero, enzo}	// Así nos conoce la cara profe!
 		
+		/** Salud y energía (corazones y cocas) */
 		const corazon1 = new Corazon()
 		const corazon2 = new Corazon()
 		const corazon3 = new Corazon()
@@ -71,55 +73,56 @@ object nivel2 {
 		
 		const cocas = #{coca1, coca2, coca3}
 		
+		///////////////////////////////////////////////////////////////
 		
+		/**  Agregado de elementos */
 		alumnos.forEach{alumno => game.addVisual(alumno)}
 		corazones.forEach{corazon => game.addVisual(corazon)}
+		cocas.forEach{coca => game.addVisual(coca)}
 		
+		/** Seteo de posiciones aleatorias según parámetros especificados */ 
 		alumnos.forEach{alumno => alumno.setNewRandomPosition()}
 		corazones.forEach{corazon => corazon.setNewRandomPosition()}
-		
-		cocas.forEach{coca => game.addVisual(coca)}
 		cocas.forEach{coca => coca.setNewRandomPosition()}
 		
-		alumnos.forEach{alumno => game.onTick(5000, "Mostrar monedas", { alumno.atrapameSiPodes() })}
+		/** Activación de mensajes y movimiento de alumnos */
+		alumnos.forEach{alumno => game.onTick(5000, "Atrapame si podés!", { alumno.atrapameSiPodes() })} // ver alumno.atrapameSiPodes()
 		
+		alumnos.forEach{alumno => self.moverAleatorio(alumno, 1000)}
 		
-		// Gerardo
+		/////////
+		
+		/** Seteo de atributos de gerardo y agregado de barra superior */
+		self.setGerardo()
+		self.agregarBarra()
+		
+		/** Agregado de Gerardo e interacción con los objetos */
 		game.addVisual(gerardo)
 		
 		game.onCollideDo(gerardo, {objeto => gerardo.interactuar(objeto)})
-
+		
+		/** Definición de teclas */
 		keyboard.up().onPressDo({ gerardo.move(up)})
 		keyboard.down().onPressDo({gerardo.move(down)})
 		keyboard.right().onPressDo({ gerardo.move(right)})
 		keyboard.left().onPressDo({ gerardo.move(left)})
 		
+		// Agarra elementos agarrables
 		keyboard.e().onPressDo({gerardo.agarrar()})
-		
+		// Resetea el nivel acutal
 		keyboard.r().onPressDo({ self.restart() })
-		
-		self.setGerardo()
-		
-		self.agregarBarra()
-		
-		self.mostrarMonedas()
-		
-		alumnos.forEach{alumno => self.moverAleatorio(alumno, 1000)}
-		
-		
-		
-		game.onTick(1, "Mostrar monedas", { self.mostrarMonedas() })		
-
-		game.onTick(1, "Mostrar puerta", { self.aparecerPuerta() })
-		
-		// el ganar si corresponde es que aparezca la puerta y la pise
-		
-		game.onTick(1, "Perder si corresponde", { self.perderSiCorresponde() })		
-		
 		// Para probar ganar
 		keyboard.t().onPressDo({self.ganarALaFuerza()})
 		// Para probar perder
 		keyboard.y().onPressDo({self.perderALaFuerza()})
+	
+		/** Mostrar monedas obtenidas y puerta */
+		game.onTick(1, "Mostrar monedas", { self.mostrarMonedas() })		
+
+		game.onTick(1, "Mostrar puerta", { self.aparecerPuerta() })
+		
+		/** Perder si corresponde ( para ganar --> puerta.interactuar() )  */
+		game.onTick(1, "Perder si corresponde", { self.perderSiCorresponde() })		
 	}
 	
 	method setGerardo() {
@@ -129,7 +132,7 @@ object nivel2 {
 		gerardo.salud(100)
 		gerardo.monedas(0)
 		
-		// esto si se quiere setear
+		// Posición y dirección
 		gerardo.position(game.center())
 		gerardo.direccion(right)
 	}
@@ -162,6 +165,26 @@ object nivel2 {
 		}
 	}
 	
+	/** Gana si interactúa */
+	method aparecerPuerta() {
+		if (gerardo.puedeGanarNivel2() and not puertaNivel2.estaEnElNivel()) {
+			puertaNivel2.estaEnElNivel(true)
+			game.addVisual(puertaNivel2)
+			puertaNivel2.setNewRandomPosition()
+			game.say(puertaNivel2, "Ya podés entrar Gerardo!")
+		}
+	}
+	
+	method perderSiCorresponde() {
+		if (gerardo.salud() == 0 or gerardo.energia() == 0) {
+			game.say(gerardo, "Pero que alumnos malos!")
+			game.schedule(3000, {
+				game.clear()
+				nivelPerder.configurate()
+			})
+		}
+	}
+	
 	method ganarALaFuerza() {
 		game.schedule(2000, {
 				game.addVisual(puertaNivel2)
@@ -181,27 +204,9 @@ object nivel2 {
 				nivelPerder.configurate()
 			})
 	}
-	
-	method perderSiCorresponde() {
-		if (gerardo.salud() == 0 or gerardo.energia() == 0) {
-			game.say(gerardo, "Pero que alumnos malos!")
-			game.schedule(3000, {
-				game.clear()
-				nivelPerder.configurate()
-			})
-		}
-	}
-	
-	method aparecerPuerta() {
-		if (gerardo.monedas() == 4 and not puertaNivel2.estaEnElNivel()) {
-			puertaNivel2.estaEnElNivel(true)
-			game.addVisual(puertaNivel2)
-			puertaNivel2.setNewRandomPosition()
-			game.say(puertaNivel2, "Ya podés entrar Gerardo!")
-		}
-	}
-	
 }
+
+/** ********************** FIN DEL NIVEL 2 CONFIGURACION DEL 3 ************************** **/
 
 object finNivel2 {
 	method configurate() {
@@ -209,21 +214,3 @@ object finNivel2 {
 		return 0
 	}
 }
-
-
-
-
-
-
-/**
-
-
-implementar alumnos
---> alumnos.interactuar --> resta salud Y da moneda
-
---> mostrar monedas
-
---> tras obtencion 4 monedas aparece puerta --> ganar nivel
-
---> agregar corazones
- */

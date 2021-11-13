@@ -4,19 +4,24 @@ import direcciones.*
 import nivelPerder.*
 
 object gerardo {
+	// Energía y salud seteada en cada nivel
 	var property energia = 0
 	var property salud = 0
-	var property position = game.center()
+	
+	// Posicion inicial en todos los niveles
+	var property position = game.center()	
+	var property direccion = right
+	// Nivel 1
 	var property llavesEncontradas = 0
 	var property llavesEntregadas = 0
 	var property cajasEncontradas = 0
+	
+	// Nivel2
 	var property monedas = 0
 	
-	var property direccion = right
-	
-	method image() {		// solo contempla si mira a la derecha o izquierda
-		var imagen			// si se corrige --> sacar de moveRight() y moveLeft()
-		
+	method image() {	
+		// Basada en la dirección en la que mira Gerardo	
+		var imagen			
 		
 		if (direccion.isUp()) {
 			imagen = "gerardoarriba.png"
@@ -30,16 +35,15 @@ object gerardo {
 		return imagen
 	}
 	
-	method seSuperpone() = false 
-	// evita problemas con la creacion de elementos y posiciones aleatorias
+	method seSuperpone() = false 		// evita problemas con la creacion de elementos y posiciones aleatorias
 	
-	method sePuedePisar() = true	// Así los bichos pueden llegar a Gerardo
+	method sePuedePisar() = true		// Los elementos que se mueven pueden llegar a Gerardo
 	
 	method tieneEnergia() = energia > 0
 	
 	/** ************************************ **/
 	
-	// Suma y resta de energía salud y dinero
+	// Suma y resta de energía (máximo 50) y salud (máximo 100)
 	method sumarSalud(cantidad) { salud = (salud + cantidad).min(100) }
 	
 	method restarSalud(cantidad) { salud = (salud - cantidad).max(0) }
@@ -61,10 +65,12 @@ object gerardo {
 		cajasEncontradas += cant
 	}
 	
+	// Monedas
 	method sumarMoneda(cant) {
 		monedas += cant
 	}
 	
+	// Interacción con depósitos ( ver elementos.wlk --> Depósito.interactuar() )
 	method entregarLlaves() {
 		llavesEncontradas -= 1
 		llavesEntregadas += 1
@@ -77,7 +83,7 @@ object gerardo {
 	
 	/** ************************************ **/
 	
-	// Movimientos
+	/** Movimiendo de Gerardo */
 	method move(dir) {				
 		
 		if (self.tieneEnergia()) {
@@ -94,7 +100,7 @@ object gerardo {
 			game.say(self, "Mejor reinicio mis pasos...")
 		}
 	}
-	
+	/*/
 	method hayCeldaLibreAl(dir) {
 		var hayCeldaLibre = true
 		
@@ -109,7 +115,7 @@ object gerardo {
 		}
 		return hayCeldaLibre
 	}
-	
+	*/
 	method moveUp() {
 
 		if (not (self.position().y() == game.height() - 2)) {
@@ -153,7 +159,10 @@ object gerardo {
 		direccion = left
 	}
 	
+	
 	method agarrar() {
+		
+		/** Agarra lo que este en direccion vecina en la dirección en la que mira */
 		
 		const objetosEnCeldaLindante = game.getObjectsIn(self.posicionVecinaA(self.direccion()))
 		
@@ -182,8 +191,12 @@ object gerardo {
 	method puedeGanarNivel1() {
 		return self.llavesEntregadas() == 3 and self.cajasEncontradas() == 3
 	}
+	
+	method puedeGanarNivel2() {
+		return self.monedas() == 4
+	}
 
 	/** ************************************ **/
 	
-	method ingresarCaja() {}     // si no rompe con el collide de las cajas
+	//method ingresarCaja() {}     // si no rompe con el collide de las cajas
 }
