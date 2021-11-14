@@ -14,6 +14,10 @@ object musicaFondoNivel1{
 	method parar(){
 		musica.stop()
 	}
+	
+	method played(){
+		return musica.played()
+	}
 }
 
 object musicaFondoNivel2{
@@ -27,5 +31,47 @@ object musicaFondoNivel2{
 	
 	method parar(){
 		musica.stop()
+	}
+	
+	method played(){
+		return musica.played()
+	}
+}
+
+object musicaFondoNivel11{
+	//Es solo para cuando pierde en algún nivel que vuelva a sonar, es la misma del nivel 1
+	const musica = game.sound("8bit1.0.mp3")
+	
+	method sonar(){
+		musica.shouldLoop(true)
+		musica.volume(0.3)
+		musica.play()
+	}
+	
+	method parar(){
+		musica.stop()
+	}
+	
+	method played(){
+		return musica.played()
+	}
+}
+
+object musicaFondoNivel22{
+	//Es para cuando vuelve a empezar el nivel 2 luego de un reinicio suene.
+	const musica = game.sound("8bit.0.mp3")
+	
+	method sonar(){
+		musica.shouldLoop(true)
+		musica.volume(0.3)
+		musica.play()
+	}
+	
+	method parar(){
+		musica.stop()
+	}
+	
+	method played(){
+		return musica.played()
 	}
 }

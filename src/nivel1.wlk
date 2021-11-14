@@ -277,8 +277,18 @@ object finNivel1 {
 		keyboard.enter().onPressDo({
 			game.clear()
 			inicioNivel2.configurate()
-			musicaFondoNivel1.parar()
-			musicaFondoNivel2.sonar()
+			//Esto es necesario para parar la música del nivel 1 la primera o segunda vez que suena.
+			if (musicaFondoNivel11.played()){
+				musicaFondoNivel11.parar()
+			} else if (musicaFondoNivel1.played()){
+				musicaFondoNivel1.parar()
+			}
+			//Esto es necesario para que vuelva a sonar la música del nivel 2 por segunda vez.
+			if (not musicaFondoNivel2.played()){
+				musicaFondoNivel2.sonar()
+			} else if (not musicaFondoNivel22.played()){
+				musicaFondoNivel22.sonar()
+			}
 		})
 	}
 }

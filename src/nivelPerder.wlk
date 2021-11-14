@@ -2,10 +2,11 @@ import wollok.game.*
 import inicio.*
 import fondo.*
 import nivel1.*
+import sonidos.*
 
 object nivelPerder {
 	
-	/** En cualqueir nivel que pierda se configura */
+	/** En cualquier nivel que pierda se configura */
 	
 	method configurate() {
 		
@@ -14,7 +15,9 @@ object nivelPerder {
 		keyboard.enter().onPressDo({
 			game.clear()
 			interfazInicioNivel1.seleccion("comienzo_1")
+			musicaFondoNivel2.parar()
 			inicio.configurate()
+			musicaFondoNivel11.sonar()
 		})
 	}
 } 
