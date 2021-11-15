@@ -49,7 +49,7 @@ object interfazInicioNivel1 {
 	}
 }
 
-/** ************************* INICIO DE NIVEL1 ************************** **/
+/** ************************* INICIO DE NIVEL 1 ************************** **/
 
 object nivel1 {
 	method configurate() {

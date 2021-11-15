@@ -80,14 +80,12 @@ class Corazon inherits Comida {
 	override method saludPorUnidad() = 25
 
 	override method serAgarrado() {
-	}
-
-	override method interactuar() {
 		gerardo.sumarSalud(self.saludPorUnidad())
 		game.say(gerardo, "Milagro!")
 		game.removeVisual(self)
 	}
-
+	
+	override method interactuar() {}
 }
 
 /** *********************************************************************** **/
@@ -100,10 +98,14 @@ class Bicho inherits Elemento {			/** Clase padre (abstracta) */
 	method saludQueQuita()
 
 	override method interactuar() {
-		gerardo.restarSalud(self.saludQueQuita())
-		game.say(gerardo, "Plagas de *** !")
-		estaEnElNivel = false
-		game.removeVisual(self)
+		const elementos = game.colliders(self)
+		
+		if (elementos.contains(gerardo)) {
+			gerardo.restarSalud(self.saludQueQuita())
+			game.say(gerardo, "Plagas de *** !")
+			estaEnElNivel = false
+			game.removeVisual(self)
+		} 		
 	}
 
 	method moverAleatorioCada(milisegundos) {
@@ -114,6 +116,7 @@ class Bicho inherits Elemento {			/** Clase padre (abstracta) */
 
 	method moverAleatorio() {
 		const nro = new Range(start = 0, end = 3).anyOne()
+		
 		if (nro == 0) {
 			if (self.hayCeldaLibreAl(up)) {
 				self.moveUp()
@@ -295,7 +298,18 @@ object pepucha inherits Bicho {
 		game.say(gerardo, "Te dejo volar tranquila pepucha!")
 		game.say(self, "Urru Urru!")
 	}
-
+	
+	method brindarGranada() {
+		const granada = new Granada()
+		granada.setNewRandomPosition()
+		return granada
+	}
+	
+	method brindarCorazon() {
+		const corazon = new Corazon()
+		corazon.setNewRandomPosition()
+		return corazon
+	}
 }
 
 /** Alumnos */
@@ -368,7 +382,12 @@ object cande inherits Alumno {
 
 /** Gero nivel 3 */
 object geroParca inherits Alumno {
+	var property salud = 3
 	
+	override method esBicho() = false
+	
+	override method esGeroParca() = true
+		
 	override method image() = "geroparca.png"
 
 	override method saludQueQuita() = 20
@@ -376,18 +395,19 @@ object geroParca inherits Alumno {
 	override method mensajeGerardo() = "Así nunca vas a aprobar!"
 	
 	override method interactuar() {
-		gerardo.restarSalud(self.saludQueQuita())
-		game.say(self, "QUIERO MI MONEDA")
-		
+		if (game.colliders(self).contains(gerardo)) {
+			gerardo.restarSalud(self.saludQueQuita())
+			game.say(self, "QUIERO MI MONEDA")
+		}
 		/** continuar */	
 	}
 	
 	method moverHaciaGerardo() {
 		
 		/**
-			Gero "Parca" Picón puede moverse en diagonal además de en linea recta, en
-			base a donde se encuentre Gerardo en un momento dado, buscando siempre estar
-			en su misma posición.
+			Gero "Parca" Picón puede moverse en diagonal además de en linea recta, 
+			como el rey en un juego de ajedrez en base a donde se encuentre Gerardo 
+			en un momento dado, buscando siempre estar en su misma posición.
 		 */
 		 
 		const gerardoPos = gerardo.position()
@@ -424,6 +444,30 @@ object geroParca inherits Alumno {
 				}
 			}
 		}
+	}
+	
+	method llamarPlaga() {
+		const nro = new Range(start = 0, end = 3).anyOne()
+		var plaga
+		
+		if (nro == 0) {
+			plaga = new Cucaracha()
+		}
+		if (nro == 1) {
+			plaga = new Mosquito()
+		}
+		if (nro == 2) {
+			plaga = new Pulga()
+		}
+		if (nro == 3) {
+			plaga = new Garrapata()
+		}
+		plaga.setNewRandomPosition()		
+		return plaga
+	}
+	
+	method recibirGranadazo() {
+		salud -= 1
 	}
 }
 

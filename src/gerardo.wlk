@@ -16,15 +16,21 @@ object gerardo {
 	var property llavesEncontradas = 0
 	var property llavesEntregadas = 0
 	var property cajasEncontradas = 0
-	
 	// Nivel2
 	var property monedas = 0
-	
 	// Nivel 3
-	var property granadaEnBolsillo = null
-	var property tieneGranada = granadaEnBolsillo != null
+	var property tieneGranada = false
+	var property granadaEnBolsillo
 	
 	/////////////////////////////////////////////////////////////////////
+	
+	method esGerardo() = true
+	
+	method esComida() = false
+	
+	method esBicho() = false
+	
+	//method esGeroParca() = false
 	
 	method image() {	
 		// Basada en la dirección en la que mira Gerardo	
@@ -42,7 +48,7 @@ object gerardo {
 		return imagen
 	}
 	
-	method seSuperpone() = false 		// evita problemas con la creacion de elementos y posiciones aleatorias
+	method puedeSuperponer() = false 		// evita problemas con la creacion de elementos y posiciones aleatorias
 	
 	method sePuedePisar() = true		// Los elementos que se mueven pueden llegar a Gerardo
 	
@@ -63,6 +69,8 @@ object gerardo {
 	
 	// Interaccion con objetos
 	method interactuar(elemento) { elemento.interactuar()}
+	
+	method interactuar() {}
 	
 	// Llaves 
 	method sumarLlaves(cant) { llavesEncontradas += cant }
@@ -195,6 +203,7 @@ object gerardo {
 	method tirarGranada() {
 		granadaEnBolsillo.serArrojadaEnDireccion(self.direccion())
 		granadaEnBolsillo = null
+		self.tieneGranada(false)
 	}
 }
 

@@ -7,7 +7,8 @@ import direcciones.*
 import fondo.*
 import bichosYComida.*
 import nivelPerder.*
-//import ganarJuego.*
+import ganarJuego.*
+
 
 object inicioNivel3 {
 	method configurate() {
@@ -17,6 +18,7 @@ object inicioNivel3 {
 		keyboard.enter().onPressDo({ interfazInicioNivel3.seleccionar() })
 	}
 }
+/** CORREGIR LO DE LAS GRANADAS INTERACTUAR()  */
 
 object interfazInicioNivel3 {
 	var property seleccion = "comienzo_1"
@@ -44,16 +46,66 @@ object interfazInicioNivel3 {
 	}
 }
 
+/** ************************* INICIO DE NIVEL 3 ************************** **/
+
 object nivel3 {
 	method configurate() {
 		
 		/** Fondo nivel */
 		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ladrillo.png"))
 		
+		/** Plagas llamadas por Gerónimo */
+		var plagas = #{/*Son llamadas en tiempo de ejecución*/}
+		
+		// Cada 5.5 segundos invoca una nueva plaga
+		game.onTick(5500, "Invocar plaga", {
+			const unaPlaga = geroParca.llamarPlaga()
+			plagas.add(unaPlaga)
+			game.addVisual(unaPlaga)
+			unaPlaga.moverAleatorioCada(750)
+		})
+		
+		const granadas = #{}  // acepta hasta tres granadas
+		 // cada 2.5 segundos
+		game.onTick(2500, "Invocar granada", {	
+			if (granadas.size() < 3) {
+				const granada = pepucha.brindarGranada()
+				game.addVisual(granada)
+				granadas.add(granada)
+			}
+		})
+		
+		game.onTick(1, "Corroborar granadas", {
+			granadas.forEach{granada => 
+				if (not game.hasVisual(granada)) {
+					granadas.remove(granada)
+				}
+			}
+		})
+		
+		//granadas.forEach{granada => game.onCollideDo(granada, {e => e.interactuar()})}
+		
+		const corazones = #{} // acepta hasta 3 corazones
+		 // cada 2.5 segundos
+		game.onTick(2500, "Invocar corazon", {
+			if (corazones.size() < 3) {
+				const corazon = pepucha.brindarCorazon()
+				game.addVisual(corazon)
+				corazones.add(corazon)
+			}
+		})
+		
+		game.onTick(1, "Corroborar corazones", {
+			corazones.forEach{corazon => 
+				if (not game.hasVisual(corazon)) {
+					corazones.remove(corazon)
+				}
+			}
+		})
+		
 		/** Agregado de Gerardo e interacción con los objetos */	
 		game.addVisual(gerardo)
 		
-		game.onCollideDo(gerardo, {objeto => gerardo.interactuar(objeto)})
 		
 		self.setGerardo()
 		
@@ -95,7 +147,15 @@ object nivel3 {
 		game.addVisual(geroParca)
 		geroParca.position(game.origin())
 		
+		game.onCollideDo(geroParca, {e => e.interactuar()})
+		
+		game.onCollideDo(gerardo, {objeto => gerardo.interactuar(objeto)})
+		
 		game.onTick(1000, "Mover gero", { geroParca.moverHaciaGerardo() })
+		
+		game.onTick(1, "Ganar", { self.ganarSiCorresponde() })
+		
+		game.onTick(1, "Perder", { self.perderSiCorresponde() })
 	}
 	
 	method setGerardo() {
@@ -121,26 +181,30 @@ object nivel3 {
 		game.clear()
 		self.configurate()
 	}
+	
+	method ganarSiCorresponde() {
+		if (geroParca.salud() == 0) {
+			game.schedule(2500, {
+				game.say(gerardo, "Ganamo Pepucha!")
+				game.clear()
+				inicioGanarJuego.configurate()
+			})
+		}
+	}
+	
+	method perderSiCorresponde() {
+		if (gerardo.salud() == 0) {
+			game.schedule(2000, {game.say(gerardo, "Gero la p*** madre!")})
+			game.schedule(3500, {
+				game.clear()
+				nivelPerder.configurate()
+			})
+		}
+	}
+	
+	method moverAleatorio(objeto, milisegundos) {
+		if (game.hasVisual(objeto)) {
+			game.onTick(milisegundos, "Movimiento aleatorio", { objeto.moverAleatorio() })
+		}
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

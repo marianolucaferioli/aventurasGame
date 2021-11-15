@@ -4,6 +4,7 @@ import gerardo.*
 import direcciones.*
 import utilidades.*
 import nivel2.*
+import bichosYComida.*
 
 class Elemento {				/** Clase padre (abstracta) */
 	
@@ -18,6 +19,8 @@ class Elemento {				/** Clase padre (abstracta) */
 	/** ************************** **/
 	
 	// Validaciones de tipos
+	method esGerardo() = false
+	
 	method esCaja() = false
 	
 	method esLlave() = false
@@ -29,6 +32,8 @@ class Elemento {				/** Clase padre (abstracta) */
 	method esBicho() = false
 	
 	method esGranada() = false
+	
+	method esGeroParca() = false
 	
 	/** ************************** **/
 	
@@ -205,6 +210,7 @@ object puertaNivel2 inherits Elemento {
 
 class Granada inherits Elemento {
 	var property estado = 0  // 0 -> no explota / 1 -> explota
+
 	
 	override method sePuedePisar() = true
 	
@@ -218,22 +224,147 @@ class Granada inherits Elemento {
 		} else {
 			imagen = "explosion.png"
 		}
+		return imagen
 	} 
 	
 	override method serAgarrado() {
 		if (not gerardo.tieneGranada()) {
+			gerardo.tieneGranada(true)
 			gerardo.granadaEnBolsillo(self)
 			game.say(gerardo, "Cuidado con esto!")
 			game.removeVisual(self)
-		} else {
-			game.say(gerardo, "Ya tengo una!")
 		}
 	}
 	
 	method serArrojadaEnDireccion(dir) {
+		var movimientos = 0
 		
-		/** implementar */
+		if (dir.isUp()) {
+			self.position(gerardo.position().up(1))
+			movimientos += 1
+			game.addVisual(self)
+			game.onTick(1000, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self)) {
+					self.moveUp()
+					movimientos += 1
+				} else if (movimientos == 3) {
+					self.estado(1)
+					movimientos += 1
+					game.schedule(500, {
+						game.removeVisual(self)
+					})
+				}
+			})
+		}
+		if (dir.isDown()) {
+			self.position(gerardo.position().down(1))
+			game.addVisual(self)
+			movimientos += 1
+			game.onTick(1000, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self)) {
+					self.moveDown()
+					movimientos += 1
+				} else if (movimientos == 3) {
+					self.estado(1)
+					movimientos += 1
+					game.schedule(500, {
+						game.removeVisual(self)
+					})
+				}
+			})
+		}
+		if (dir.isRight()) {
+			self.position(gerardo.position().right(1))
+			game.addVisual(self)
+			movimientos += 1
+			game.onTick(1000, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self)) {
+					self.moveRight()
+					movimientos += 1
+				} else if (movimientos == 3) {
+					self.estado(1)
+					movimientos += 1
+					game.schedule(500, {
+						game.removeVisual(self)
+					})
+				}
+			})
+		}
+		if (dir.isLeft()) {
+			self.position(gerardo.position().left(1))
+			game.addVisual(self)
+			movimientos += 1
+			game.onTick(1000, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self)) {
+					self.moveLeft()
+					movimientos += 1
+				} else if (movimientos == 3) {
+					self.estado(1)
+					movimientos += 1
+					game.schedule(500, {
+						game.removeVisual(self)
+					})
+				}
+			})
+		}
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 	}
+	
+	/** Nota: Si Gerardo pisa la granada hace boom. */
+	override method interactuar() {
+
+		const elementosAfectados = game.colliders(self)
+		
+		if (elementosAfectados.contains(gerardo)) {
+			gerardo.salud(0)
+		}
+		if (elementosAfectados.contains(geroParca)) {
+			geroParca.recibirGranadazo()
+			if (geroParca.salud() == 0) {
+				game.say(geroParca, "Esto cuándo lo vimos!?")
+				game.schedule(1000, {
+					game.removeVisual(geroParca)
+				})
+			}
+		}
+		estado = 1
+		game.schedule(1000, {game.removeVisual(self)})
+	}
+		
+		/*/
+		if (elementosAfectados.contains(gerardo)) {
+			gerardo.salud(0)
+		} else if (elementosAfectados.contains(geroParca)) {
+			geroParca.recibirGranadazo()
+			if (geroParca.salud() == 0) {
+				game.say(geroParca, "Esto cuándo lo vimos!?")
+				game.schedule(1000, {
+					game.removeVisual(geroParca)
+				})
+			}
+		} else {
+			elementosAfectados.forEach{elem => game.removeVisual(elem)}
+		}
+		estado = 1
+		game.schedule(1000, {game.removeVisual(self)})
+	}
+	*/
 	
 	
 	method moveUp() {
