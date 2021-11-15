@@ -8,7 +8,7 @@ import fondo.*
 import bichosYComida.*
 import nivelPerder.*
 import nivel3.*
-import nivel3.*
+import sonidos.*
 
 
 object inicioNivel2 {
@@ -217,6 +217,18 @@ object finNivel2 {
 		keyboard.enter().onPressDo({
 			game.clear()
 			inicioNivel3.configurate()
+			//Esto es necesario para parar la música del nivel 2 la primera o segunda vez que suena.
+			if (musicaFondoNivel22.played()){
+				musicaFondoNivel22.parar()
+			} else if (musicaFondoNivel2.played()){
+				musicaFondoNivel2.parar()
+			}
+			//Esto es necesario para que vuelva a sonar la música del nivel 3 por segunda vez.
+			if (not musicaFondoNivel3.played()){
+				musicaFondoNivel3.sonar()
+			} else if (not musicaFondoNivel33.played()){
+				musicaFondoNivel33.sonar()
+			}
 		})
 	}
 }

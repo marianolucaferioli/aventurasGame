@@ -55,7 +55,7 @@ object nivel3 {
 		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ladrillo.png"))
 		
 		/** Plagas llamadas por Gerónimo */
-		var plagas = #{/*Son llamadas en tiempo de ejecución*/}
+		const plagas = #{/*Son llamadas en tiempo de ejecución*/}
 		
 		// Cada 5.5 segundos invoca una nueva plaga
 		game.onTick(5500, "Invocar plaga", {
@@ -140,7 +140,12 @@ object nivel3 {
 			
 		})
 		// Resetea el nivel actal
-		keyboard.r().onPressDo({ self.restart() })		
+		keyboard.r().onPressDo({ self.restart() })	
+		
+		// Para probar ganar
+		keyboard.t().onPressDo({self.ganarALaFuerza()})
+		// Para probar perder
+		keyboard.y().onPressDo({self.perderALaFuerza()})	
 		
 		game.onTick(1, "Mostrar granada", { self.mostrarGranada() })
 	
@@ -184,11 +189,12 @@ object nivel3 {
 	
 	method ganarSiCorresponde() {
 		if (geroParca.salud() == 0) {
-			game.schedule(2500, {
-				game.say(gerardo, "Ganamo Pepucha!")
-				game.clear()
-				inicioGanarJuego.configurate()
-			})
+			game.schedule(2000, {
+					game.say(gerardo, "Ganamo Pepucha!")
+					game.schedule(3500, {
+						game.clear()
+						inicioGanarJuego.configurate()
+				})
 		}
 	}
 	
@@ -200,6 +206,23 @@ object nivel3 {
 				nivelPerder.configurate()
 			})
 		}
+	}
+	
+	method ganarALaFuerza() {
+		game.schedule(2000, {
+				game.say(gerardo, "Ganamo Pepucha!")
+				game.schedule(3500, {
+					game.clear()
+					inicioGanarJuego.configurate()
+			})
+	}
+	
+	method perderALaFuerza() {
+		game.schedule(2000, {game.say(gerardo, "Gero la p*** madre!")})
+			game.schedule(3500, {
+				game.clear()
+				nivelPerder.configurate()
+			})
 	}
 	
 	method moverAleatorio(objeto, milisegundos) {

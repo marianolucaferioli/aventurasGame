@@ -75,3 +75,40 @@ object musicaFondoNivel22{
 		return musica.played()
 	}
 }
+
+object musicaFondoNivel3{
+	const musica = game.sound("nivel3.mp3")
+	
+	method sonar(){
+		musica.shouldLoop(true)
+		musica.volume(0.3)
+		musica.play()
+	}
+	
+	method parar(){
+		musica.stop()
+	}
+	
+	method played(){
+		return musica.played()
+	}
+}
+
+object musicaFondoNivel33{
+	//Es para cuando vuelve a empezar el nivel 3 luego de un reinicio suene.
+	const musica = game.sound("nivel3.0.mp3")
+	
+	method sonar(){
+		musica.shouldLoop(true)
+		musica.volume(0.3)
+		musica.play()
+	}
+	
+	method parar(){
+		musica.stop()
+	}
+	
+	method played(){
+		return musica.played()
+	}
+}
