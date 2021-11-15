@@ -13,6 +13,8 @@ class Elemento {				/** Clase padre (abstracta) */
 	
 	method sePuedePisar() = false			// ver bicho.moverAleatorio()
 	
+	method image()
+	
 	/** ************************** **/
 	
 	// Validaciones de tipos
@@ -25,6 +27,8 @@ class Elemento {				/** Clase padre (abstracta) */
 	method esComida() = false
 	
 	method esBicho() = false
+	
+	method esGranada() = false
 	
 	/** ************************** **/
 	
@@ -48,7 +52,7 @@ class Elemento {				/** Clase padre (abstracta) */
 /** *********************************************************************** **/
 
 class Llave inherits Elemento {
-	method image() = "llavecita.png"
+	override method image() = "llavecita.png"
 	
 	override method esLlave() = true
 	
@@ -69,7 +73,7 @@ class Deposito inherits Elemento {
 	var property llavesRecuperadas = 0
 	var property cajasRecuperadas = 0
 	
-	method image() = "deposito.png"
+	override method image() = "deposito.png"
 	
 	// Permite que elementos pasen SOBRE el
 	override method sePuedePisar() = true		
@@ -111,7 +115,7 @@ class Deposito inherits Elemento {
 
 class Caja inherits Elemento {
 			
-	method image() = "caja.png"
+	override method image() = "caja.png"
 	
 	override method esCaja() = true
 	
@@ -181,18 +185,120 @@ class Caja inherits Elemento {
 	}
 }
 
-object puertaNivel2 inherits Elemento{
+/** *********************************************************************** **/
+
+object puertaNivel2 inherits Elemento {
+	
 	var property estaEnElNivel = false
 	
-	method image() = "puerta.png"
+	override method image() = "puerta.png"
 	
 	override method interactuar() {
 		/** Notar que permite interactuar únicamente si Gerardo puede ganar el nivel 2 ( ver nivel2 --> aparecerPuerta() ) */
 		game.say(self, "Felicitaciones!")
-		game.schedule(2000, finNivel2.configurate())
+		game.schedule(2000, { finNivel2.configurate() })
 	}
 	
 }
+
+/** *********************************************************************** **/
+
+class Granada inherits Elemento {
+	var property estado = 0  // 0 -> no explota / 1 -> explota
+	
+	override method sePuedePisar() = true
+	
+	override method esGranada() = true
+	
+	override method image() {
+		var imagen
+		
+		if (estado == 0) {
+			imagen = "granada.png"
+		} else {
+			imagen = "explosion.png"
+		}
+	} 
+	
+	override method serAgarrado() {
+		if (not gerardo.tieneGranada()) {
+			gerardo.granadaEnBolsillo(self)
+			game.say(gerardo, "Cuidado con esto!")
+			game.removeVisual(self)
+		} else {
+			game.say(gerardo, "Ya tengo una!")
+		}
+	}
+	
+	method serArrojadaEnDireccion(dir) {
+		
+		/** implementar */
+	}
+	
+	
+	method moveUp() {
+		if (not (self.position().y() == game.height() - 2)) {
+			position = self.position().up(1)
+		} else {
+			position = new Position(x = self.position().x(), y = 0)
+		}
+	}
+	
+	method moveDown() {
+		if (not (self.position().y() == 0)) {
+			position = self.position().down(1)
+		} else {
+			position = new Position(x = self.position().x(), y = game.height()-2)
+		}
+	}
+	
+	method moveRight() {
+		if (not (self.position().x() == game.width() - 1)) {
+			position = self.position().right(1)
+		} else {
+			position = new Position(x = 0, y = self.position().y())
+		}
+	}
+	
+	method moveLeft() {
+		if (not (self.position().x() == 0)) {
+			position = self.position().left(1)
+		} else {
+			position = new Position(x = game.width()-1 , y = self.position().y())
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

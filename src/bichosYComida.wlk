@@ -5,8 +5,6 @@ import direcciones.*
 
 class Comida inherits Elemento {			/** Clase padre (abstracta) */
 
-	method image()
-
 	override method esComida() = true
 
 	override method interactuar() {
@@ -96,8 +94,6 @@ class Corazon inherits Comida {
 class Bicho inherits Elemento {			/** Clase padre (abstracta) */
 
 	var estaEnElNivel = true
-
-	method image()
 
 	override method esBicho() = true
 
@@ -369,3 +365,86 @@ object cande inherits Alumno {
 	override method mensajeGerardo() = "Que amable Cande..."
 
 }
+
+/** Gero nivel 3 */
+object geroParca inherits Alumno {
+	
+	override method image() = "geroparca.png"
+
+	override method saludQueQuita() = 20
+
+	override method mensajeGerardo() = "Así nunca vas a aprobar!"
+	
+	override method interactuar() {
+		gerardo.restarSalud(self.saludQueQuita())
+		game.say(self, "QUIERO MI MONEDA")
+		
+		/** continuar */	
+	}
+	
+	method moverHaciaGerardo() {
+		
+		/**
+			Gero "Parca" Picón puede moverse en diagonal además de en linea recta, en
+			base a donde se encuentre Gerardo en un momento dado, buscando siempre estar
+			en su misma posición.
+		 */
+		 
+		const gerardoPos = gerardo.position()
+		const selfPos = self.position()
+		
+		if (gerardoPos != selfPos) {
+			if (selfPos.x() == gerardoPos.x()) {		// primero considera si esta en la misma fila o columna
+				if (selfPos.y() < gerardoPos.y()) {
+					self.moveUp()
+				} else {
+					self.moveDown()
+				}
+			} else if (selfPos.y() == gerardoPos.y()) {
+				if (selfPos.x() < gerardoPos.x()) {
+					self.moveRight()
+				} else {
+					self.moveLeft()
+				}
+			} else {					// ahora considera si no coincide en ningun eje
+				if (gerardoPos.x() > selfPos.x()) {
+					self.moveRight()
+					if (gerardoPos.y() > selfPos.y()) {			// acá se logra el movimiento en diagonal
+						self.moveUp()
+					} else {
+						self.moveDown()
+					}
+				} else {
+					self.moveLeft()
+					if (gerardoPos.y() > selfPos.y()) {
+						self.moveUp()
+					} else {
+						self.moveDown()
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

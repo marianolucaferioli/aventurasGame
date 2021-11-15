@@ -2,6 +2,7 @@ import wollok.game.*
 import celdasEspeciales.*
 import direcciones.*
 import nivelPerder.*
+import bichosYComida.geroParca
 
 object gerardo {
 	// Energía y salud seteada en cada nivel
@@ -18,6 +19,12 @@ object gerardo {
 	
 	// Nivel2
 	var property monedas = 0
+	
+	// Nivel 3
+	var property granadaEnBolsillo = null
+	var property tieneGranada = granadaEnBolsillo != null
+	
+	/////////////////////////////////////////////////////////////////////
 	
 	method image() {	
 		// Basada en la dirección en la que mira Gerardo	
@@ -100,22 +107,7 @@ object gerardo {
 			game.say(self, "Mejor reinicio mis pasos...")
 		}
 	}
-	/*/
-	method hayCeldaLibreAl(dir) {
-		var hayCeldaLibre = true
-		
-		if (dir.isUp()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().up(1)).all{obj => obj.puedeSuperponer()}
-		} else if (dir.isDown()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().down(1)).all{obj => obj.puedeSuperponer()}
-		} else if (dir.isRight()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().right(1)).all{obj => obj.puedeSuperponer()}
-		} else {
-			hayCeldaLibre = game.getObjectsIn(self.position().left(1)).all{obj => obj.puedeSuperponer()}
-		}
-		return hayCeldaLibre
-	}
-	*/
+
 	method moveUp() {
 
 		if (not (self.position().y() == game.height() - 2)) {
@@ -196,7 +188,33 @@ object gerardo {
 		return self.monedas() == 4
 	}
 
+	method puedeGanarNivel3() = not game.hasVisual(geroParca)
+	
 	/** ************************************ **/
 	
-	//method ingresarCaja() {}     // si no rompe con el collide de las cajas
+	method tirarGranada() {
+		granadaEnBolsillo.serArrojadaEnDireccion(self.direccion())
+		granadaEnBolsillo = null
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

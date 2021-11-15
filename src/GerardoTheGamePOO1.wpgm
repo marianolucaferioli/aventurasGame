@@ -3,6 +3,7 @@ import gerardo.*
 import inicio.*
 import nivel1.*
 import nivel2.*
+import nivel3.*
 
 program Gerardo {
 	
@@ -13,7 +14,7 @@ program Gerardo {
 	game.width(15)
 	game.cellSize(65)
 	
-	inicio.configurate()
+	nivel3.configurate()
 	
 	game.start()
 }

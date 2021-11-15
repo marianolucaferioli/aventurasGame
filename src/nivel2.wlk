@@ -7,7 +7,8 @@ import direcciones.*
 import fondo.*
 import bichosYComida.*
 import nivelPerder.*
-//import nivel3.*
+import nivel3.*
+import nivel3.*
 
 
 object inicioNivel2 {
@@ -210,7 +211,12 @@ object nivel2 {
 
 object finNivel2 {
 	method configurate() {
-		/** configurar */
-		return 0
+		
+		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ganarNivel2.png"))
+		
+		keyboard.enter().onPressDo({
+			game.clear()
+			inicioNivel3.configurate()
+		})
 	}
 }

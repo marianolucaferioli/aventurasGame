@@ -188,3 +188,12 @@ object cont_moneda4 inherits ElementoDeBarra {
 	
 	override method image() = "contadorMonedita.png"
 }
+
+object cont_granada inherits ElementoDeBarra {
+	
+	override method position() = game.at(14,14)
+	
+	override method image() = "granada.png"
+}
+
+
