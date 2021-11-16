@@ -4,7 +4,7 @@ import celdasEspeciales.*
 import barrasSuperiores.*
 import elementos.*
 import direcciones.*
-import fondo.*
+import utilidades.*
 import bichosYComida.*
 import nivelPerder.*
 import nivel2.*
@@ -101,9 +101,6 @@ object nivel1 {
 		const cocacola = new Cocacola()
 		
 		const comidas = #{garbanzo, empanada, birra, cocacola}
-		
-		/** Pepucha */
-		//const pepucha = new Pepucha()
 	
 		///////////////////////////////////////////////////////////////
 		
@@ -199,6 +196,7 @@ object nivel1 {
 		game.addVisual(contadorEnergia2)
 	}
 	
+	/** Los métodos mostrar evaluan los elementos recuperados por Gerardo y los muestran en la barra superior */
 	method mostrarCajas() {
 		const cajas = gerardo.cajasEncontradas() 
 		

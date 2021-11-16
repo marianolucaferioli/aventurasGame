@@ -4,12 +4,11 @@ import celdasEspeciales.*
 import barrasSuperiores.*
 import elementos.*
 import direcciones.*
-import fondo.*
+import utilidades.*
 import bichosYComida.*
 import nivelPerder.*
 import nivel3.*
 import sonidos.*
-
 
 object inicioNivel2 {
 	method configurate() {
@@ -187,22 +186,22 @@ object nivel2 {
 	
 	method ganarALaFuerza() {
 		game.schedule(2000, {
-				game.addVisual(puertaNivel2)
-				gerardo.position(puertaNivel2.position())
-				game.say(puertaNivel2, "Venga profe nomás...")
-			})
-			game.schedule(5000, {
-				game.clear()
-				finNivel2.configurate()
-			})
+			game.addVisual(puertaNivel2)
+			gerardo.position(puertaNivel2.position())
+			game.say(puertaNivel2, "Venga profe nomás...")
+		})
+		game.schedule(5000, {
+			game.clear()
+			finNivel2.configurate()
+		})
 	}
 	
 	method perderALaFuerza() {
 		game.say(gerardo, "Que alumnos malos!")
-			game.schedule(2000, {
-				game.clear()
-				nivelPerder.configurate()
-			})
+		game.schedule(2000, {
+			game.clear()
+			nivelPerder.configurate()
+		})
 	}
 }
 

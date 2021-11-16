@@ -1,6 +1,6 @@
 import wollok.game.*
 import inicio.*
-import fondo.*
+import utilidades.*
 import nivel1.*
 import sonidos.*
 

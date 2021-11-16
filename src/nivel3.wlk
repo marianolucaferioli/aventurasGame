@@ -4,7 +4,7 @@ import celdasEspeciales.*
 import barrasSuperiores.*
 import elementos.*
 import direcciones.*
-import fondo.*
+import utilidades.*
 import bichosYComida.*
 import nivelPerder.*
 import ganarJuego.*
@@ -57,12 +57,12 @@ object nivel3 {
 		const plagas = #{/*Son llamadas en tiempo de ejecución*/}	// acepta hasta 15 plagas
 		
 		// Cada 3 segundos invoca una nueva plaga
-		game.onTick(2500, "Invocar plaga", {
+		game.onTick(3000, "Invocar plaga", {
 			if (plagas.size() < 15) {
 				const unaPlaga = geroParca.llamarPlaga()
 				plagas.add(unaPlaga)
 				game.addVisual(unaPlaga)
-				unaPlaga.moverAleatorioCada(500)	// cada 500 milisegundos se mueve
+				unaPlaga.moverAleatorioCada(400)	// cada 400 milisegundos se mueve
 			}
 		})
 		
@@ -96,8 +96,8 @@ object nivel3 {
 		
 		/** Corazones brindados por Pepucha */
 		const corazones = #{} // acepta hasta 3 corazones
-		 // cada 2.5 segundos
-		game.onTick(2500, "Invocar corazon", {
+		 // cada 3 segundos
+		game.onTick(3000, "Invocar corazon", {
 			if (corazones.size() < 3) {
 				const corazon = pepucha.brindarCorazon()
 				game.addVisual(corazon)
@@ -146,7 +146,6 @@ object nivel3 {
 			} else {
 				gerardo.agarrar()
 			}
-			
 		})
 		
 		// Resetea el nivel actal
@@ -208,10 +207,10 @@ object nivel3 {
 	method ganarSiCorresponde() {
 		if (geroParca.salud() == 0) {
 			game.schedule(2000, {
-					game.say(gerardo, "Ganamo Pepucha!")
-					game.schedule(3500, {
-						game.clear()
-						inicioGanarJuego.configurate()
+				game.say(gerardo, "Ganamo Pepucha!")
+				game.schedule(3500, {
+					game.clear()
+					inicioGanarJuego.configurate()
 				})
 			})
 		}
@@ -231,20 +230,20 @@ object nivel3 {
 		geroParca.salud(0)
 		game.removeVisual(geroParca)
 		game.schedule(2000, {
-					game.say(gerardo, "Ganamo Pepucha!")
-					game.schedule(3500, {
-						game.clear()
-						inicioGanarJuego.configurate()
-				})
-			})	
+			game.say(gerardo, "Ganamo Pepucha!")
+			game.schedule(3500, {
+				game.clear()
+				inicioGanarJuego.configurate()
+			})
+		})	
 	}
 	
 	method perderALaFuerza() {
 		game.schedule(2000, {game.say(gerardo, "Gero la p*** madre!")})
-			game.schedule(3500, {
-				game.clear()
-				nivelPerder.configurate()
-			})
+		game.schedule(3500, {
+			game.clear()
+			nivelPerder.configurate()
+		})
 	}
 }
 
