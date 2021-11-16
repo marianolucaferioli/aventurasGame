@@ -15,10 +15,13 @@ object nivelPerder {
 		keyboard.enter().onPressDo({
 			game.clear()
 			interfazInicioNivel1.seleccion(1)
+			//No considera si vuelve a perder luego de un reinicio.
 			if (musicaFondoNivel3.played()){
 				musicaFondoNivel3.parar()
-			} else {
+			} else if (musicaFondoNivel2.played()){
 				musicaFondoNivel2.parar()	
+			} else {
+				musicaFondoNivel1.parar()	
 			}
 			inicio.configurate()
 			musicaFondoNivel11.sonar()

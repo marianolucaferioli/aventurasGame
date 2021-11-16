@@ -3,7 +3,12 @@ import sonidos.*
 
 object inicioGanarJuego {
 	method configurate() {
-		//musicaFondoNivel3.parar()
+		//Considera hasta un reinicio.
+		if (musicaFondoNivel33.played()){
+			musicaFondoNivel33.parar()
+		} else {
+			musicaFondoNivel3.parar()
+		}
 		musicaGanar.sonar()
 		game.addVisual(interfazGanar)
 		keyboard.enter().onPressDo({ interfazGanar.seleccionar() })		
