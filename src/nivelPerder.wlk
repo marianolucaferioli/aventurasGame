@@ -14,7 +14,7 @@ object nivelPerder {
 	
 		keyboard.enter().onPressDo({
 			game.clear()
-			interfazInicioNivel1.seleccion("comienzo_1")
+			interfazInicioNivel1.seleccion(1)
 			if (musicaFondoNivel3.played()){
 				musicaFondoNivel3.parar()
 			} else {
