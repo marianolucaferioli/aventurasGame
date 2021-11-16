@@ -52,7 +52,62 @@ class Elemento {
 	
 	method serAgarrado() {}
 	
-	method ingresarCaja() {}
+	method ingresarCaja() {} // hace posible la interaccion de los depósitos con las cajas
+	
+	method move(dir) {
+		if (dir.isUp()) {self.moveUp()}
+		else if (dir.isDown()) {self.moveDown()}
+		else if (dir.isRight()) {self.moveRight()}
+		else {self.moveLeft()}
+	}
+	
+	method moveUp() {
+		if (not (self.position().y() == game.height() - 2)) {
+			position = self.position().up(1)
+		} else {
+			position = new Position(x = self.position().x(), y = 0)
+		}
+	}
+	
+	method moveDown() {
+		if (not (self.position().y() == 0)) {
+			position = self.position().down(1)
+		} else {
+			position = new Position(x = self.position().x(), y = game.height()-2)
+		}
+	}
+	
+	method moveRight() {
+		if (not (self.position().x() == game.width() - 1)) {
+			position = self.position().right(1)
+		} else {
+			position = new Position(x = 0, y = self.position().y())
+		}
+	}
+	
+	method moveLeft() {
+		if (not (self.position().x() == 0)) {
+			position = self.position().left(1)
+		} else {
+			position = new Position(x = game.width()-1 , y = self.position().y())
+		}
+	}
+		
+	method hayCeldaLibreAl(dir) {
+		// Si en la direccion en la que se mueve hay algun elemento que no se puede pisar retorna falso
+		var hayCeldaLibre = true
+		
+		if (dir.isUp()) {
+			hayCeldaLibre = game.getObjectsIn(self.position().up(1)).all{obj => obj.sePuedePisar()}
+		} else if (dir.isDown()) {
+			hayCeldaLibre = game.getObjectsIn(self.position().down(1)).all{obj => obj.sePuedePisar()}
+		} else if (dir.isRight()) {
+			hayCeldaLibre = game.getObjectsIn(self.position().right(1)).all{obj => obj.sePuedePisar()}
+		} else {
+			hayCeldaLibre = game.getObjectsIn(self.position().left(1)).all{obj => obj.sePuedePisar()}
+		}
+		return hayCeldaLibre
+	}
 }
 
 /** *********************************************************************** **/
@@ -134,61 +189,6 @@ class Caja inherits Elemento {
 			game.say(gerardo, "No puedo mover la caja che!")
 		}
 	}
-	
-	method move(dir) {
-		if (dir.isUp()) {self.moveUp()}
-		else if (dir.isDown()) {self.moveDown()}
-		else if (dir.isRight()) {self.moveRight()}
-		else {self.moveLeft()}
-	}
-	
-	method moveUp() {
-		if (not (self.position().y() == game.height() - 2)) {
-			position = self.position().up(1)
-		} else {
-			position = new Position(x = self.position().x(), y = 0)
-		}
-	}
-	
-	method moveDown() {
-		if (not (self.position().y() == 0)) {
-			position = self.position().down(1)
-		} else {
-			position = new Position(x = self.position().x(), y = game.height()-2)
-		}
-	}
-	
-	method moveRight() {
-		if (not (self.position().x() == game.width() - 1)) {
-			position = self.position().right(1)
-		} else {
-			position = new Position(x = 0, y = self.position().y())
-		}
-	}
-	
-	method moveLeft() {
-		if (not (self.position().x() == 0)) {
-			position = self.position().left(1)
-		} else {
-			position = new Position(x = game.width()-1 , y = self.position().y())
-		}
-	}
-		
-	method hayCeldaLibreAl(dir) {
-		// Si en la direccion en la que se mueve hay algun elemento que no se puede pisar retorna falso
-		var hayCeldaLibre = true
-		
-		if (dir.isUp()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().up(1)).all{obj => obj.sePuedePisar()}
-		} else if (dir.isDown()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().down(1)).all{obj => obj.sePuedePisar()}
-		} else if (dir.isRight()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().right(1)).all{obj => obj.sePuedePisar()}
-		} else {
-			hayCeldaLibre = game.getObjectsIn(self.position().left(1)).all{obj => obj.sePuedePisar()}
-		}
-		return hayCeldaLibre
-	}
 }
 
 /** *********************************************************************** **/
@@ -242,75 +242,34 @@ class Granada inherits Elemento {
 		var movimientos = 0
 		
 		if (dir.isUp()) {
-			self.position(gerardo.position().up(1))
-			movimientos += 1
-			game.addVisual(self)
-			game.onTick(500, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
-					self.moveUp()
-					movimientos += 1
-					if (movimientos == 3) {	// lo pregunta antes para cambiar el estado de la granada y asi su imagen
-						self.estado(1)
-					}
-				} else if (movimientos == 3) {
-					movimientos += 1
-					game.removeVisual(self)
-				}
-			})
-		}
-		if (dir.isDown()) {
-			self.position(gerardo.position().down(1))
-			game.addVisual(self)
-			movimientos += 1
-			game.onTick(500, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
-					self.moveDown()
-					movimientos += 1
-					if (movimientos == 3) {	// lo pregunta antes para cambiar el estado de la granada y asi su imagen
-						self.estado(1)
-					}
-				} else if (movimientos == 3) {
-					movimientos += 1
-					game.removeVisual(self)
-				}
-			})
-		}
-		if (dir.isRight()) {
-			self.position(gerardo.position().right(1))
-			game.addVisual(self)
-			movimientos += 1
-			game.onTick(500, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
-					self.moveRight()
-					movimientos += 1
-					if (movimientos == 3) {
-						self.estado(1)
-					}
-				} else if (movimientos == 3) {
-					movimientos += 1
-					game.removeVisual(self)
-				}
-			})
-		}
-		if (dir.isLeft()) {
-			self.position(gerardo.position().left(1))
-			game.addVisual(self)
-			movimientos += 1
-			game.onTick(500, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
-					self.moveLeft()
-					movimientos += 1
-					if (movimientos == 3) {	
-						self.estado(1)
-					}
-				} else if (movimientos == 3) {
-					movimientos += 1
-					game.removeVisual(self)
-				}
-			})
-		}
-	}
+			self.position(gerardo.position().up(1))		// se posiciona en celda vecina a gerardo (dir --> gerardo.dir())
+	  	} else if (dir.isDown()) {
+	  		self.position(gerardo.position().down(1))
+	  	} else if (dir.isRight()) {
+	  		self.position(gerardo.position().right(1))
+	  	} else if (dir.isLeft()) {
+	  			self.position(gerardo.position().left(1))
+	  	}
 	
+		movimientos += 1
+		game.addVisual(self)
+		game.onTick(500, "Tirar granada", {
+			if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
+				self.move(dir)
+				movimientos += 1
+				if (movimientos == 3) {	// lo pregunta antes para cambiar el estado de la granada y asi su imagen
+					self.estado(1)
+				}
+			} else if (movimientos == 3) {
+				movimientos += 1
+				if (game.hasVisual(self)) {		// lo pregunta porque con los tiempos de ejecución a veces elimina una que ya no se encuentra
+					game.removeVisual(self)
+				}
+			}
+		})
+	}
+
+
 	/** Nota: Si Gerardo pisa la granada hace boom. */
 	override method interactuar() {
 
@@ -329,37 +288,6 @@ class Granada inherits Elemento {
 			}
 		}
 		estado = 1
-	}
-	
-	method moveUp() {
-		if (not (self.position().y() == game.height() - 2)) {
-			position = self.position().up(1)
-		} else {
-			position = new Position(x = self.position().x(), y = 0)
-		}
-	}
-	
-	method moveDown() {
-		if (not (self.position().y() == 0)) {
-			position = self.position().down(1)
-		} else {
-			position = new Position(x = self.position().x(), y = game.height()-2)
-		}
-	}
-	
-	method moveRight() {
-		if (not (self.position().x() == game.width() - 1)) {
-			position = self.position().right(1)
-		} else {
-			position = new Position(x = 0, y = self.position().y())
-		}
-	}
-	
-	method moveLeft() {
-		if (not (self.position().x() == 0)) {
-			position = self.position().left(1)
-		} else {
-			position = new Position(x = game.width()-1 , y = self.position().y())
-		}
+		game.schedule(200, {game.removeVisual(self)})
 	}
 }

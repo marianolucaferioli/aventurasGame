@@ -57,12 +57,12 @@ object nivel3 {
 		const plagas = #{/*Son llamadas en tiempo de ejecución*/}	// acepta hasta 15 plagas
 		
 		// Cada 3 segundos invoca una nueva plaga
-		game.onTick(3000, "Invocar plaga", {
+		game.onTick(2500, "Invocar plaga", {
 			if (plagas.size() < 15) {
 				const unaPlaga = geroParca.llamarPlaga()
 				plagas.add(unaPlaga)
 				game.addVisual(unaPlaga)
-				unaPlaga.moverAleatorioCada(750)
+				unaPlaga.moverAleatorioCada(500)	// cada 500 milisegundos se mueve
 			}
 		})
 		
@@ -76,14 +76,15 @@ object nivel3 {
 		
 		/** Granadas brindadas por Pepucha */
 		const granadas = #{}  // acepta hasta 1 granada
-		 // cada 2.5 segundos crea una granada si no hay ninguna en el mapa ni en el bolsillo de gerardo
-		game.onTick(2500, "Invocar granada", {	
+		 // cada 4 segundos crea una granada (si no hay ninguna en el mapa ni en el bolsillo de gerardo)
+		game.onTick(4000, "Invocar granada", {	
 			if (granadas.size() < 1 and not gerardo.tieneGranada()) {
 				const granada = pepucha.brindarGranada()
 				game.addVisual(granada)
 				granadas.add(granada)
 			}
 		})
+		
 		
 		game.onTick(1, "Corroborar granadas", {		// Libera espacio para nuevas granadas
 			granadas.forEach{granada => 

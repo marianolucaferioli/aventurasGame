@@ -209,7 +209,11 @@ object barraSaludGero inherits ElementoDeBarra {
  		const salud = geroParca.salud()
  		var imagen
  		
- 		if (salud == 3) {
+ 		if (salud == 5) {
+ 			imagen = "saludGero5.png"
+ 		} else if (salud == 4) {
+ 			imagen = "saludGero4.png"
+ 		} else if (salud == 3) {
  			imagen = "saludGero3.png"
  		} else if (salud == 2) {
  			imagen = "saludGero2.png"

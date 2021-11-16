@@ -146,53 +146,6 @@ class Bicho inherits Elemento {			/** Clase padre (abstracta) */
 			}
 		}
 	}
-
-	method moveUp() {
-		if (not (self.position().y() == game.height() - 2)) {
-			position = self.position().up(1)
-		} else {
-			position = new Position(x = self.position().x(), y = 0)
-		}
-	}
-
-	method moveDown() {
-		if (not (self.position().y() == 0)) {
-			position = self.position().down(1)
-		} else {
-			position = new Position(x = self.position().x(), y = game.height() - 2)
-		}
-	}
-
-	method moveRight() {
-		if (not (self.position().x() == game.width() - 1)) {
-			position = self.position().right(1)
-		} else {
-			position = new Position(x = 0, y = self.position().y())
-		}
-	}
-
-	method moveLeft() {
-		if (not (self.position().x() == 0)) {
-			position = self.position().left(1)
-		} else {
-			position = new Position(x = game.width() - 1, y = self.position().y())
-		}
-	}
-
-	method hayCeldaLibreAl(dir) {
-		var hayCeldaLibre = true
-		if (dir.isUp()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().up(1)).all{ obj => obj.sePuedePisar() }
-		} else if (dir.isDown()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().down(1)).all{ obj => obj.sePuedePisar() }
-		} else if (dir.isRight()) {
-			hayCeldaLibre = game.getObjectsIn(self.position().right(1)).all{ obj => obj.sePuedePisar() }
-		} else {
-			hayCeldaLibre = game.getObjectsIn(self.position().left(1)).all{ obj => obj.sePuedePisar() }
-		}
-		return hayCeldaLibre
-	}
-
 }
 
 /** **************************************************** **/
@@ -382,7 +335,7 @@ object cande inherits Alumno {
 
 /** Gero nivel 3 */
 object geroParca inherits Alumno {
-	var property salud = 3
+	var property salud = 5
 	
 	override method esBicho() = false
 	
@@ -470,25 +423,3 @@ object geroParca inherits Alumno {
 		salud -= 1
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
