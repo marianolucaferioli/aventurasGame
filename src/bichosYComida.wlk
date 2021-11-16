@@ -22,8 +22,7 @@ class Comida inherits Elemento {			/** Clase padre (abstracta) */
 		game.removeVisual(self)
 	}
 
-	method moverAleatorio() {
-	}
+	method moverAleatorio() {}
 
 }
 
@@ -154,7 +153,6 @@ class Garrapata inherits Bicho {
 	override method image() = "garrapata.png"
 
 	override method saludQueQuita() = 50
-
 }
 
 /** **************************************************** **/
@@ -184,6 +182,7 @@ class Mosquito inherits Bicho {
 }
 
 /** *********************************************************************** **/
+
 object pepucha inherits Bicho {
 
 	var energiaParaDar = 50
@@ -337,9 +336,9 @@ object cande inherits Alumno {
 object geroParca inherits Alumno {
 	var property salud = 5
 	
-	override method esBicho() = false
+	//override method esBicho() = false
 	
-	override method esGeroParca() = true
+	//override method esGeroParca() = true
 		
 	override method image() = "geroparca.png"
 
@@ -351,8 +350,8 @@ object geroParca inherits Alumno {
 		if (game.colliders(self).contains(gerardo)) {
 			gerardo.restarSalud(self.saludQueQuita())
 			game.say(self, "QUIERO MI MONEDA")
+			game.say(gerardo, self.mensajeGerardo())
 		}
-		/** continuar */	
 	}
 	
 	method moverHaciaGerardo() {

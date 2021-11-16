@@ -36,6 +36,10 @@ class Elemento {
 	
 	method esGeroParca() = false
 	
+	//////
+	method ingresarCaja() {}
+	/////
+	
 	/** ************************** **/
 	
 	method setNewRandomPosition() {
@@ -51,8 +55,6 @@ class Elemento {
 	method interactuar()
 	
 	method serAgarrado() {}
-	
-	method ingresarCaja() {} // hace posible la interaccion de los depósitos con las cajas
 	
 	method move(dir) {
 		if (dir.isUp()) {self.moveUp()}
@@ -93,7 +95,7 @@ class Elemento {
 		}
 	}
 		
-	method hayCeldaLibreAl(dir) {
+	method hayCeldaLibreAl(dir) {	/** Mas que nada para el movimiento aleatorio */
 		// Si en la direccion en la que se mueve hay algun elemento que no se puede pisar retorna falso
 		var hayCeldaLibre = true
 		
@@ -113,6 +115,7 @@ class Elemento {
 /** *********************************************************************** **/
 
 class Llave inherits Elemento {
+	
 	override method image() = "llavecita.png"
 	
 	override method esLlave() = true
@@ -210,8 +213,7 @@ object puertaNivel2 inherits Elemento {
 /** *********************************************************************** **/
 
 class Granada inherits Elemento {
-	var property estado = 0  // 0 -> no explota / 1 -> explota
-
+	var property estado = 0  // 0 -> no explotó / 1 -> explotó
 	
 	override method sePuedePisar() = true
 	
@@ -250,8 +252,8 @@ class Granada inherits Elemento {
 	  	} else if (dir.isLeft()) {
 	  			self.position(gerardo.position().left(1))
 	  	}
-	
 		movimientos += 1
+		
 		game.addVisual(self)
 		game.onTick(500, "Tirar granada", {
 			if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
@@ -268,7 +270,6 @@ class Granada inherits Elemento {
 			}
 		})
 	}
-
 
 	/** Nota: Si Gerardo pisa la granada hace boom. */
 	override method interactuar() {

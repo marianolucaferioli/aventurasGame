@@ -8,7 +8,7 @@ class ElementoDeBarra {		/** Clase padre (abstracta) */
 		Notar que ElementoDeBarra no hereda de Elemento (ver elementos.wlk), 
 		pues no lo necesita.
 		No es posible que elementos del juego pisen elementos de la barra.
-	 */
+	*/
 	
 	method position()
 	
@@ -201,6 +201,7 @@ object cont_granada inherits ElementoDeBarra {
 	override method image() = "cont_granada.png"
 }
 
+/** Contador de salud de Gero Parca */
 object barraSaludGero inherits ElementoDeBarra {
  	
  	override method position() = game.at(11,14)

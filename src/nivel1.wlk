@@ -142,6 +142,7 @@ object nivel1 {
 		game.addVisual(gerardo)
 		
 		game.onCollideDo(gerardo, {objeto => gerardo.interactuar(objeto)})
+		
 		// Unicamente funciona con elementos que son "caja"
 		cajas.forEach{caja => game.onCollideDo(caja, {depo => depo.ingresarCaja()})}
 		
@@ -180,12 +181,12 @@ object nivel1 {
 		gerardo.energia(30)
 		gerardo.salud(100)
 		gerardo.llavesEncontradas(0)
-		gerardo.cajasEncontradas(0)
 		gerardo.llavesEntregadas(0)
+		gerardo.cajasEncontradas(0)
 		
 		// Posición y dirección
 		gerardo.position(game.center())
-		gerardo.direccion(right)
+		gerardo.direccion(up)
 	}
 	
 	method agregarBarra() {
@@ -225,7 +226,7 @@ object nivel1 {
 	}
 	
 	method ganarSiCorresponde() {
-		if (gerardo.llavesEntregadas() == 3 and gerardo.cajasEncontradas() == 3) {
+		if (gerardo.puedeGanarNivel1()) {
 			game.schedule(2000, {
 				game.say(gerardo, "Listo el pollo!")
 			})

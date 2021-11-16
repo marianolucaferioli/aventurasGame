@@ -9,7 +9,7 @@ object inicio {
 		/** 
 
 			Configuración inicial
-			Cada elemento de la interfaz pretende conformar un menú interactivo para el inicio
+			Cada elemento de la interfaz pretende conformar un menú "interactivo" para el inicio
 			de cada nivel del juego:  ver interfazInicio.image() y la interaccion con la tecla enter.
 
 		*/

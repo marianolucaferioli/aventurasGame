@@ -75,7 +75,7 @@ object nivel3 {
 		})
 		
 		/** Granadas brindadas por Pepucha */
-		const granadas = #{}  // acepta hasta 1 granada
+		const granadas = #{/*La genera en tiempo de ejecución */}  // acepta hasta 1 granada
 		 // cada 4 segundos crea una granada (si no hay ninguna en el mapa ni en el bolsillo de gerardo)
 		game.onTick(4000, "Invocar granada", {	
 			if (granadas.size() < 1 and not gerardo.tieneGranada()) {
@@ -84,7 +84,6 @@ object nivel3 {
 				granadas.add(granada)
 			}
 		})
-		
 		
 		game.onTick(1, "Corroborar granadas", {		// Libera espacio para nuevas granadas
 			granadas.forEach{granada => 
@@ -115,9 +114,7 @@ object nivel3 {
 		
 		/** Agregado y seteo de Gerardo y barra superior */	
 		game.addVisual(gerardo)
-		
 		self.setGerardo()
-		
 		self.agregarBarra()
 		
 		
@@ -139,7 +136,7 @@ object nivel3 {
 			gerardo.sumarEnergia(1)
 		})
 	
-		// Agarra granadas o las tira según corresponda
+		// Agarra granadas o las tira según corresponda (si tiene una granada en mano, no puede agarrrar un corazón)
 		keyboard.e().onPressDo({  
 			if (gerardo.tieneGranada()) {
 				gerardo.tirarGranada()
@@ -157,8 +154,9 @@ object nivel3 {
 		
 		game.onTick(1, "Mostrar granada", { self.mostrarGranada() })
 	
+		/** Agregado y seteo de Gero "La parca" Picón */
 		game.addVisual(geroParca)
-		geroParca.salud(3)
+		geroParca.salud(5)
 		geroParca.position(game.origin())
 		
 		game.onCollideDo(geroParca, {e => e.interactuar()})
@@ -205,7 +203,7 @@ object nivel3 {
 	}
 	
 	method ganarSiCorresponde() {
-		if (geroParca.salud() == 0) {
+		if (gerardo.puedeGanarNivel3()) {
 			game.schedule(2000, {
 				game.say(gerardo, "Ganamo Pepucha!")
 				game.schedule(3500, {
@@ -246,4 +244,3 @@ object nivel3 {
 		})
 	}
 }
-

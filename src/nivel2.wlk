@@ -88,7 +88,7 @@ object nivel2 {
 		/** Activación de mensajes y movimiento de alumnos */
 		alumnos.forEach{alumno => game.onTick(5000, "Atrapame si podés!", { alumno.atrapameSiPodes() })} // ver alumno.atrapameSiPodes()
 		
-		alumnos.forEach{alumno => self.moverAleatorio(alumno, 1000)}
+		alumnos.forEach{alumno => self.moverAleatorio(alumno, 500)}
 		
 		/////////
 		
@@ -107,7 +107,7 @@ object nivel2 {
 		keyboard.left().onPressDo({ gerardo.move(left)})
 		
 		// Agarra elementos agarrables
-		keyboard.e().onPressDo({gerardo.agarrar()})
+		keyboard.e().onPressDo({ gerardo.agarrar() })
 		// Resetea el nivel acutal
 		keyboard.r().onPressDo({ self.restart() })
 		// Para probar ganar
@@ -117,10 +117,11 @@ object nivel2 {
 	
 		/** Mostrar monedas obtenidas y puerta */
 		game.onTick(1, "Mostrar monedas", { self.mostrarMonedas() })		
-
+		
+		/** Equivale a "ganarSiCorresponde() --> ver puertaNivel2.interactuar() */
 		game.onTick(1, "Mostrar puerta", { self.aparecerPuerta() })
 		
-		/** Perder si corresponde ( para ganar --> puerta.interactuar() )  */
+		/** Perder si corresponde */
 		game.onTick(1, "Perder si corresponde", { self.perderSiCorresponde() })		
 	}
 	
@@ -133,7 +134,7 @@ object nivel2 {
 		
 		// Posición y dirección
 		gerardo.position(game.center())
-		gerardo.direccion(right)
+		gerardo.direccion(down)
 	}
 	
 	method agregarBarra() {

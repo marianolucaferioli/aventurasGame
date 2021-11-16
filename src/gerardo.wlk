@@ -9,15 +9,16 @@ object gerardo {
 	var property energia = 0
 	var property salud = 0
 	
-	// Posicion inicial en todos los niveles
+	// Posicion inicial en todos los niveles a menos que se setee
 	var property position = game.center()	
 	var property direccion = right
+	
 	// Nivel 1
-	var property llavesEncontradas = 0
-	var property llavesEntregadas = 0
-	var property cajasEncontradas = 0
+	var property llavesEncontradas = 0	// cuando la agarra
+	var property llavesEntregadas = 0	// cuando la entrega
+	var property cajasEncontradas = 0	// cuando ingresa cajas
 	// Nivel2
-	var property monedas = 0
+	var property monedas = 0	// cuando las recupera
 	// Nivel 3
 	var property tieneGranada = false
 	var property granadaEnBolsillo
@@ -29,8 +30,6 @@ object gerardo {
 	method esComida() = false
 	
 	method esBicho() = false
-	
-	//method esGeroParca() = false
 	
 	method image() {	
 		// Basada en la dirección en la que mira Gerardo	
@@ -73,7 +72,9 @@ object gerardo {
 	method interactuar() {}
 	
 	// Llaves 
-	method sumarLlaves(cant) { llavesEncontradas += cant }
+	method sumarLlaves(cant) { 
+		llavesEncontradas += cant
+	}
 	
 	// Cajas
 	method sumarCajas(cant) { 
@@ -98,7 +99,7 @@ object gerardo {
 	
 	/** ************************************ **/
 	
-	/** Movimiendo de Gerardo */
+	/** Movimiento de Gerardo */
 	method move(dir) {				
 		
 		if (self.tieneEnergia()) {
@@ -124,7 +125,7 @@ object gerardo {
 			self.position(new Position(x = self.position().x(), y = 0))
 		}
 		self.restarEnergia(1)
-		direccion = up
+		direccion = up		// En gerardo guarda la direccion por la imagen
 	}
 	
 	method moveDown() {
@@ -155,7 +156,6 @@ object gerardo {
 			self.position(new Position(x = game.width()-1 , y = self.position().y()))
 		}
 		self.restarEnergia(1)
-		
 		direccion = left
 	}
 	
@@ -196,7 +196,9 @@ object gerardo {
 		return self.monedas() == 4
 	}
 
-	method puedeGanarNivel3() = not game.hasVisual(geroParca)
+	method puedeGanarNivel3() {
+		return geroParca.salud() == 0
+	} 
 	
 	/** ************************************ **/
 	
@@ -206,24 +208,3 @@ object gerardo {
 		self.tieneGranada(false)
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
