@@ -6,13 +6,14 @@ import utilidades.*
 import nivel2.*
 import bichosYComida.*
 
-class Elemento {				/** Clase padre (abstracta) */
+/** Clase padre (abstracta) */
+class Elemento {				
 	
 	var property position = game.center()		// Inicia el en centro para luego darle una posicion aleatoria
 	
 	method puedeSuperponer() = false		// ver elemento.setNewRandomPosition() (ln. 30)
 	
-	method sePuedePisar() = false			// ver bicho.moverAleatorio()
+	method sePuedePisar() = false			// ver bichosYComidas.wlk --> bicho.moverAleatorio()
 	
 	method image()
 	
@@ -62,7 +63,7 @@ class Llave inherits Elemento {
 	override method esLlave() = true
 	
 	override method interactuar() {
-		game.say(gerardo, "Upa, y esto?")		// SE BUGUEA CON EL WHEN COLLIDE DO, NUNCA ELIMINA EL GLOBO
+		game.say(gerardo, "Upa, y esto?")
 	}
 	
 	override method serAgarrado() {
@@ -200,7 +201,7 @@ object puertaNivel2 inherits Elemento {
 	
 	override method interactuar() {
 		/** Notar que permite interactuar únicamente si Gerardo puede ganar el nivel 2 ( ver nivel2 --> aparecerPuerta() ) */
-		game.say(self, "Felicitaciones!")
+		game.say(gerardo, "...Gero?!")
 		game.schedule(2000, { finNivel2.configurate() })
 	}
 	
@@ -221,7 +222,8 @@ class Granada inherits Elemento {
 		
 		if (estado == 0) {
 			imagen = "granada.png"
-		} else {
+		}
+		if (estado == 1) {
 			imagen = "explosion.png"
 		}
 		return imagen
@@ -243,16 +245,16 @@ class Granada inherits Elemento {
 			self.position(gerardo.position().up(1))
 			movimientos += 1
 			game.addVisual(self)
-			game.onTick(1000, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self)) {
+			game.onTick(500, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
 					self.moveUp()
 					movimientos += 1
+					if (movimientos == 3) {	// lo pregunta antes para cambiar el estado de la granada y asi su imagen
+						self.estado(1)
+					}
 				} else if (movimientos == 3) {
-					self.estado(1)
 					movimientos += 1
-					game.schedule(500, {
-						game.removeVisual(self)
-					})
+					game.removeVisual(self)
 				}
 			})
 		}
@@ -260,16 +262,16 @@ class Granada inherits Elemento {
 			self.position(gerardo.position().down(1))
 			game.addVisual(self)
 			movimientos += 1
-			game.onTick(1000, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self)) {
+			game.onTick(500, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
 					self.moveDown()
 					movimientos += 1
+					if (movimientos == 3) {	// lo pregunta antes para cambiar el estado de la granada y asi su imagen
+						self.estado(1)
+					}
 				} else if (movimientos == 3) {
-					self.estado(1)
 					movimientos += 1
-					game.schedule(500, {
-						game.removeVisual(self)
-					})
+					game.removeVisual(self)
 				}
 			})
 		}
@@ -277,16 +279,16 @@ class Granada inherits Elemento {
 			self.position(gerardo.position().right(1))
 			game.addVisual(self)
 			movimientos += 1
-			game.onTick(1000, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self)) {
+			game.onTick(500, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
 					self.moveRight()
 					movimientos += 1
+					if (movimientos == 3) {
+						self.estado(1)
+					}
 				} else if (movimientos == 3) {
-					self.estado(1)
 					movimientos += 1
-					game.schedule(500, {
-						game.removeVisual(self)
-					})
+					game.removeVisual(self)
 				}
 			})
 		}
@@ -294,36 +296,19 @@ class Granada inherits Elemento {
 			self.position(gerardo.position().left(1))
 			game.addVisual(self)
 			movimientos += 1
-			game.onTick(1000, "Tirar granada", {
-				if (movimientos < 3 and game.hasVisual(self)) {
+			game.onTick(500, "Tirar granada", {
+				if (movimientos < 3 and game.hasVisual(self) and self.estado() == 0) {
 					self.moveLeft()
 					movimientos += 1
+					if (movimientos == 3) {	
+						self.estado(1)
+					}
 				} else if (movimientos == 3) {
-					self.estado(1)
 					movimientos += 1
-					game.schedule(500, {
-						game.removeVisual(self)
-					})
+					game.removeVisual(self)
 				}
 			})
 		}
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 	}
 	
 	/** Nota: Si Gerardo pisa la granada hace boom. */
@@ -344,28 +329,7 @@ class Granada inherits Elemento {
 			}
 		}
 		estado = 1
-		game.schedule(1000, {game.removeVisual(self)})
 	}
-		
-		/*/
-		if (elementosAfectados.contains(gerardo)) {
-			gerardo.salud(0)
-		} else if (elementosAfectados.contains(geroParca)) {
-			geroParca.recibirGranadazo()
-			if (geroParca.salud() == 0) {
-				game.say(geroParca, "Esto cuándo lo vimos!?")
-				game.schedule(1000, {
-					game.removeVisual(geroParca)
-				})
-			}
-		} else {
-			elementosAfectados.forEach{elem => game.removeVisual(elem)}
-		}
-		estado = 1
-		game.schedule(1000, {game.removeVisual(self)})
-	}
-	*/
-	
 	
 	method moveUp() {
 		if (not (self.position().y() == game.height() - 2)) {
@@ -399,46 +363,3 @@ class Granada inherits Elemento {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

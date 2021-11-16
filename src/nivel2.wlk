@@ -21,29 +21,29 @@ object inicioNivel2 {
 }
 
 object interfazInicioNivel2 {
-	var property seleccion = "comienzo_1"
+	var property seleccion = 1
 	
 	method position() = game.at(0,0)
 	
 	method image() {
 		var imagen
 		
-		if (seleccion == "comienzo_1") {
+		if (seleccion == 1) {
 			imagen = "comienzo_nivel2_1.png"
-		} else if (seleccion == "comienzo_2") {
+		} else if (seleccion == 2) {
 			imagen = "comienzo_nivel2_2.png"
-		} else if (seleccion == "comienzo_3") {
+		} else if (seleccion == 3) {
 			imagen = "comienzo_nivel2_3.png"
 		}
 		return imagen 
 	}
 	
 	method seleccionar() {
-		if (seleccion == "comienzo_1") {
-			self.seleccion("comienzo_2")
-		} else if (seleccion == "comienzo_2") {
-			self.seleccion("comienzo_3")
-		} else if (seleccion == "comienzo_3") {
+		if (seleccion == 1) {
+			self.seleccion(2)
+		} else if (seleccion == 2) {
+			self.seleccion(3)
+		} else if (seleccion == 3) {
 			game.clear()
 			nivel2.configurate()
 		}
@@ -93,13 +93,12 @@ object nivel2 {
 		
 		/////////
 		
-		/** Seteo de atributos de gerardo y agregado de barra superior */
+		/** Agregado y seteo de gerardo y barra superior */
+		game.addVisual(gerardo)
 		self.setGerardo()
 		self.agregarBarra()
 		
-		/** Agregado de Gerardo e interacción con los objetos */
-		game.addVisual(gerardo)
-		
+		/** Interacción de Gerardo con los objetos */
 		game.onCollideDo(gerardo, {objeto => gerardo.interactuar(objeto)})
 		
 		/** Definición de teclas */
@@ -172,7 +171,7 @@ object nivel2 {
 			puertaNivel2.estaEnElNivel(true)
 			game.addVisual(puertaNivel2)
 			puertaNivel2.setNewRandomPosition()
-			game.say(puertaNivel2, "Ya podés entrar Gerardo!")
+			game.say(puertaNivel2, "Venga profe nomás...!")
 		}
 	}
 	
@@ -190,7 +189,7 @@ object nivel2 {
 		game.schedule(2000, {
 				game.addVisual(puertaNivel2)
 				gerardo.position(puertaNivel2.position())
-				game.say(puertaNivel2, "Felicitaciones!")
+				game.say(puertaNivel2, "Venga profe nomás...")
 			})
 			game.schedule(5000, {
 				game.clear()

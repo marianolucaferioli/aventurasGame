@@ -6,7 +6,7 @@ import bichosYComida.*
 
 class CeldaEspecial inherits Elemento  {
 	
-	method image() = "puertaTrampa.png"
+	override method image() = "puertaTrampa.png"
 	
 	override method esCeldaEspecial() = true
 	

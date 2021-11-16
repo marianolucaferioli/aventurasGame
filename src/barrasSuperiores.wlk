@@ -1,5 +1,6 @@
 import wollok.game.*
 import gerardo.*
+import bichosYComida.geroParca
 
 class ElementoDeBarra {		/** Clase padre (abstracta) */
 	
@@ -117,9 +118,8 @@ object contadorEnergia2 inherits ElementoDeBarra {
 	} 
 }
 
-////////////////
-
-object cont_llave1 inherits ElementoDeBarra {				/** 3 llaves para nivel 1 */
+/** Llaves (nvl 1) */
+object cont_llave1 inherits ElementoDeBarra {				
 	
 	override method position() = game.at(5,14)
 	
@@ -133,6 +133,7 @@ object cont_llave2 inherits ElementoDeBarra {
 	override method image() = "contadorLlavecita.png"
 }
 
+
 object cont_llave3 inherits ElementoDeBarra {
 	
 	override method position() = game.at(7,14)
@@ -140,7 +141,8 @@ object cont_llave3 inherits ElementoDeBarra {
 	override method image() = "contadorLlavecita.png"
 }
 
-object cont_caja1 inherits ElementoDeBarra {				/** 3 cajas para nivel 1 */
+/** Cajas (nvl 1) */
+object cont_caja1 inherits ElementoDeBarra {				
 	
 	override method position() = game.at(8,14)
 	
@@ -161,7 +163,8 @@ object cont_caja3 inherits ElementoDeBarra {
 	override method image() = "contadorCaja.png"
 }
 
-object cont_moneda1 inherits ElementoDeBarra {				/** 4 monedas para nivel 2 */
+/** Monedas (nvl 2) */
+object cont_moneda1 inherits ElementoDeBarra {				
 	
 	override method position() = game.at(6,14)
 	
@@ -189,11 +192,32 @@ object cont_moneda4 inherits ElementoDeBarra {
 	override method image() = "contadorMonedita.png"
 }
 
+/** Granada y salud Gero (nvl 3) */
+
 object cont_granada inherits ElementoDeBarra {
 	
-	override method position() = game.at(14,14)
+	override method position() = game.at(7,14)
 	
-	override method image() = "granada.png"
+	override method image() = "cont_granada.png"
 }
 
-
+object barraSaludGero inherits ElementoDeBarra {
+ 	
+ 	override method position() = game.at(11,14)
+ 	
+ 	override method image() {
+ 		const salud = geroParca.salud()
+ 		var imagen
+ 		
+ 		if (salud == 3) {
+ 			imagen = "saludGero3.png"
+ 		} else if (salud == 2) {
+ 			imagen = "saludGero2.png"
+ 		} else if (salud == 1) {
+ 			imagen = "saludGero1.png"
+ 		} else {
+ 			imagen = "saludGero0.png"
+ 		}
+ 		return imagen
+ 	}
+}

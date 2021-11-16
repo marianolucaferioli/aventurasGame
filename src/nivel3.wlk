@@ -18,28 +18,27 @@ object inicioNivel3 {
 		keyboard.enter().onPressDo({ interfazInicioNivel3.seleccionar() })
 	}
 }
-/** CORREGIR LO DE LAS GRANADAS INTERACTUAR()  */
 
 object interfazInicioNivel3 {
-	var property seleccion = "comienzo_1"
+	var property seleccion = 1
 	
 	method position() = game.at(0,0)
 	
 	method image() {
 		var imagen
 		
-		if (seleccion == "comienzo_1") {
+		if (seleccion == 1) {
 			imagen = "comienzo_nivel3_1.png"
-		} else if (seleccion == "comienzo_2") {
+		} else if (seleccion == 2) {
 			imagen = "comienzo_nivel3_2.png"
 		}
 		return imagen 
 	}
 	
 	method seleccionar() {
-		if (seleccion == "comienzo_1") {
-			self.seleccion("comienzo_2")
-		} else if (seleccion == "comienzo_2") {
+		if (seleccion == 1) {
+			self.seleccion(2)
+		} else if (seleccion == 2) {
 			game.clear()
 			nivel3.configurate()
 		}
@@ -55,27 +54,38 @@ object nivel3 {
 		game.addVisual(new FondoNivel(position = game.at(0,0), image = "ladrillo.png"))
 		
 		/** Plagas llamadas por Gerónimo */
-		const plagas = #{/*Son llamadas en tiempo de ejecución*/}
+		const plagas = #{/*Son llamadas en tiempo de ejecución*/}	// acepta hasta 15 plagas
 		
-		// Cada 5.5 segundos invoca una nueva plaga
-		game.onTick(5500, "Invocar plaga", {
-			const unaPlaga = geroParca.llamarPlaga()
-			plagas.add(unaPlaga)
-			game.addVisual(unaPlaga)
-			unaPlaga.moverAleatorioCada(750)
+		// Cada 3 segundos invoca una nueva plaga
+		game.onTick(500, "Invocar plaga", {
+			if (plagas.size() < 15) {
+				const unaPlaga = geroParca.llamarPlaga()
+				plagas.add(unaPlaga)
+				game.addVisual(unaPlaga)
+				unaPlaga.moverAleatorioCada(750)
+			}
 		})
 		
-		const granadas = #{}  // acepta hasta tres granadas
-		 // cada 2.5 segundos
+		game.onTick(1, "Corroborar plagas", {	// Libera espacio para nuevas plagas
+			plagas.forEach{plaga => 
+				if (not game.hasVisual(plaga)) {
+					plagas.remove(plaga)
+				}
+			}
+		})
+		
+		/** Granadas brindadas por Pepucha */
+		const granadas = #{}  // acepta hasta 1 granada
+		 // cada 2.5 segundos crea una granada si no hay ninguna en el mapa ni en el bolsillo de gerardo
 		game.onTick(2500, "Invocar granada", {	
-			if (granadas.size() < 3) {
+			if (granadas.size() < 1 and not gerardo.tieneGranada()) {
 				const granada = pepucha.brindarGranada()
 				game.addVisual(granada)
 				granadas.add(granada)
 			}
 		})
 		
-		game.onTick(1, "Corroborar granadas", {
+		game.onTick(1, "Corroborar granadas", {		// Libera espacio para nuevas granadas
 			granadas.forEach{granada => 
 				if (not game.hasVisual(granada)) {
 					granadas.remove(granada)
@@ -83,8 +93,7 @@ object nivel3 {
 			}
 		})
 		
-		//granadas.forEach{granada => game.onCollideDo(granada, {e => e.interactuar()})}
-		
+		/** Corazones brindados por Pepucha */
 		const corazones = #{} // acepta hasta 3 corazones
 		 // cada 2.5 segundos
 		game.onTick(2500, "Invocar corazon", {
@@ -95,7 +104,7 @@ object nivel3 {
 			}
 		})
 		
-		game.onTick(1, "Corroborar corazones", {
+		game.onTick(1, "Corroborar corazones", {		// Libera espacio para nuevos corazones
 			corazones.forEach{corazon => 
 				if (not game.hasVisual(corazon)) {
 					corazones.remove(corazon)
@@ -103,9 +112,8 @@ object nivel3 {
 			}
 		})
 		
-		/** Agregado de Gerardo e interacción con los objetos */	
+		/** Agregado y seteo de Gerardo y barra superior */	
 		game.addVisual(gerardo)
-		
 		
 		self.setGerardo()
 		
@@ -115,7 +123,7 @@ object nivel3 {
 		/** En este nivel gerardo no pierde energía */
 		keyboard.up().onPressDo({ 
 			gerardo.move(up)
-			gerardo.sumarEnergia(1)
+			gerardo.sumarEnergia(1)		// Para que no le reste energía en este nivel
 		})
 		keyboard.down().onPressDo({ 
 			gerardo.move(down)
@@ -139,9 +147,9 @@ object nivel3 {
 			}
 			
 		})
+		
 		// Resetea el nivel actal
 		keyboard.r().onPressDo({ self.restart() })	
-		
 		// Para probar ganar
 		keyboard.t().onPressDo({self.ganarALaFuerza()})
 		// Para probar perder
@@ -150,6 +158,7 @@ object nivel3 {
 		game.onTick(1, "Mostrar granada", { self.mostrarGranada() })
 	
 		game.addVisual(geroParca)
+		geroParca.salud(3)
 		geroParca.position(game.origin())
 		
 		game.onCollideDo(geroParca, {e => e.interactuar()})
@@ -164,6 +173,7 @@ object nivel3 {
 	}
 	
 	method setGerardo() {
+		gerardo.position(game.center())
 		gerardo.energia(50)
 		gerardo.salud(100)
 		gerardo.tieneGranada(false)
@@ -172,6 +182,7 @@ object nivel3 {
 	method agregarBarra() {
 		// Salud y energía de Gerardo
 		game.addVisual(barraDeSalud)
+		game.addVisual(barraSaludGero)
 	}
 	
 	method mostrarGranada() {
@@ -187,6 +198,12 @@ object nivel3 {
 		self.configurate()
 	}
 	
+	method moverAleatorio(objeto, milisegundos) {
+		if (game.hasVisual(objeto)) {
+			game.onTick(milisegundos, "Movimiento aleatorio", { objeto.moverAleatorio() })
+		}
+	}
+	
 	method ganarSiCorresponde() {
 		if (geroParca.salud() == 0) {
 			game.schedule(2000, {
@@ -195,6 +212,7 @@ object nivel3 {
 						game.clear()
 						inicioGanarJuego.configurate()
 				})
+			})
 		}
 	}
 	
@@ -209,12 +227,8 @@ object nivel3 {
 	}
 	
 	method ganarALaFuerza() {
-		game.schedule(2000, {
-				game.say(gerardo, "Ganamo Pepucha!")
-				game.schedule(3500, {
-					game.clear()
-					inicioGanarJuego.configurate()
-			})
+		geroParca.salud(0)
+		game.removeVisual(geroParca)	
 	}
 	
 	method perderALaFuerza() {
@@ -224,10 +238,5 @@ object nivel3 {
 				nivelPerder.configurate()
 			})
 	}
-	
-	method moverAleatorio(objeto, milisegundos) {
-		if (game.hasVisual(objeto)) {
-			game.onTick(milisegundos, "Movimiento aleatorio", { objeto.moverAleatorio() })
-		}
-	}
 }
+

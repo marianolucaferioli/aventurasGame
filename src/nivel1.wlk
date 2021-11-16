@@ -20,29 +20,29 @@ object inicioNivel1 {
 }
 
 object interfazInicioNivel1 {
-	var property seleccion = "comienzo_1"
+	var property seleccion = 1
 	
 	method position() = game.at(0,0)
 	
 	method image() {
 		var imagen
 		
-		if (seleccion == "comienzo_1") {
+		if (seleccion == 1) {
 			imagen = "comienzo_nivel1_1.png"
-		} else if (seleccion == "comienzo_2") {
+		} else if (seleccion == 2) {
 			imagen = "comienzo_nivel1_2.png"
-		} else if (seleccion == "comienzo_3") {
+		} else if (seleccion == 3) {
 			imagen = "comienzo_nivel1_3.png"
 		}
 		return imagen 
 	}
 
 	method seleccionar() {
-		if (seleccion == "comienzo_1") {
-			self.seleccion("comienzo_2")
-		} else if (seleccion == "comienzo_2") {
-			self.seleccion("comienzo_3")
-		} else if (seleccion == "comienzo_3") {
+		if (seleccion == 1) {
+			self.seleccion(2)
+		} else if (seleccion == 2) {
+			self.seleccion(3)
+		} else if (seleccion == 3) {
 			game.clear()
 			nivel1.configurate()
 		}
@@ -133,7 +133,7 @@ object nivel1 {
 		/** Activacion del movimiento aleatorio para "bichos" */
 		self.moverAleatorio(pepucha, 1000)
 		
-		bichosMalos.forEach{ bicho => bicho.moverAleatorioCada(1000) }		// SI ROMPE SACAR
+		bichosMalos.forEach{ bicho => bicho.moverAleatorioCada(1000) }
 		 
 		/////////
 		
