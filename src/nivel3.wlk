@@ -57,7 +57,7 @@ object nivel3 {
 		const plagas = #{/*Son llamadas en tiempo de ejecución*/}	// acepta hasta 15 plagas
 		
 		// Cada 3 segundos invoca una nueva plaga
-		game.onTick(500, "Invocar plaga", {
+		game.onTick(3000, "Invocar plaga", {
 			if (plagas.size() < 15) {
 				const unaPlaga = geroParca.llamarPlaga()
 				plagas.add(unaPlaga)
@@ -228,7 +228,14 @@ object nivel3 {
 	
 	method ganarALaFuerza() {
 		geroParca.salud(0)
-		game.removeVisual(geroParca)	
+		game.removeVisual(geroParca)
+		game.schedule(2000, {
+					game.say(gerardo, "Ganamo Pepucha!")
+					game.schedule(3500, {
+						game.clear()
+						inicioGanarJuego.configurate()
+				})
+			})	
 	}
 	
 	method perderALaFuerza() {

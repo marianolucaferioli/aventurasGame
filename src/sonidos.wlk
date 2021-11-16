@@ -112,3 +112,22 @@ object musicaFondoNivel33{
 		return musica.played()
 	}
 }
+
+object musicaGanar{
+	
+	const musica = game.sound("ganar.mp3")
+	
+	method sonar(){
+		musica.shouldLoop(true)
+		musica.volume(0.3)
+		musica.play()
+	}
+	
+	method parar(){
+		musica.stop()
+	}
+	
+	method played(){
+		return musica.played()
+	}
+}

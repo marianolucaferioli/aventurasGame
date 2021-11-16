@@ -14,7 +14,7 @@ program Gerardo {
 	game.width(15)
 	game.cellSize(65)
 	
-	nivel3.configurate()
+	inicio.configurate()
 	
 	game.start()
 }
